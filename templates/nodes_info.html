@@ -1,0 +1,320 @@
+{{template "_header" .}}
+		
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="xModalNode" tabindex="-1" role="dialog" aria-labelledby="xModalNode" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-title">
+          <namenode id="modal-title-name"></namenode>
+          <small><span class="badge badge-info" id="modal-title-update">Update: _v.TimeUpdate</span></small>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>	
+	  <div class="modal-body">
+	<div class="container-fluid">
+    <div class="row">
+    
+    <!-- Содержимое блока -->
+    
+    <div id="modal-loader" class="cssload-loader">
+	    <div class="cssload-inner cssload-one"></div>
+	    <div class="cssload-inner cssload-two"></div>
+	    <div class="cssload-inner cssload-three"></div>
+    </div>
+    
+    <table id="modal-general-info" class="table table-hover table-striped table-striped table-bordered" style="display:none">
+  		<tbody>
+      
+      <tr id="modal-general-info-url-view" style="display:none">
+			<th scope="row">WWW</th>
+      		<td id="modal-general-info-url"><a href="$v.ValidatorURL">$v.ValidatorURL</a></td>
+    	  </tr>
+      
+		  <tr id="modal-general-info-desc-view" style="display:none">
+			<th scope="row">Description</th>
+      		<td id="modal-general-info-desc">$v.ValidatorDesc</td>
+    	  </tr>
+      
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td id="modal-general-info-pubkey"><a href="/node/$v.PubKey">$v.PubKey</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Uptime</th>
+      		<td id="modal-general-info-uptime">$v.Uptime %</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Created at Blocks</th>
+			<td id="modal-general-info-block"><a href="/block/$v.CreatedAtBlock">$v.CreatedAtBlock<a/> ($v.Created)</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Address</th>
+      		<td id="modal-general-info-owner"><a href="/address/$v.OwnerAddress}}">$v.OwnerAddress<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Commission</th>
+      		<td id="modal-general-info-comission">$v.Commission</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Status</th>
+      		<td id="modal-general-info-status"> --- </td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Stake</th>
+      		<td id="modal-general-info-stakes">printf "%.2f" $v.TotalStake $.CoinMinter</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">#Slots</th>
+      		<td id="modal-general-info-slots">(len $v.Stakes)/1000</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Amount blocks</th>
+      		<td id="modal-general-info-amntblocks">$v.AmntBlocks</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Amount Slashed</th>
+      		<td id="modal-general-info-amntslashed">$v.AmntSlashed</td>
+    	  </tr>
+  		</tbody>
+		</table>
+    
+    <ul class="nav nav-tabs" id="modal-tab-nav" role="tablist" style="width: 100%;">
+  			<li id="modal-tab-nav-stakes" class="nav-item" style="display:none">
+    			<a class="nav-link" id="modal-tab-stakes" data-toggle="tab" href="#tab-stakes" role="tab" aria-controls="tab-stakes" aria-selected="true">Stakes</a>
+  			</li>
+  			<li id="modal-tab-nav-noblocks" class="nav-item" style="display:none">
+    			<a class="nav-link" id="modal-tab-noblocks" data-toggle="tab" href="#tab-noblocks" role="tab" aria-controls="tab-noblocks" aria-selected="false">Blocks</a>
+  			</li>
+		</ul>		
+		<div class="tab-content" id="modal-tab-Content">
+		
+		<div class="tab-pane fade show" id="tab-stakes" role="tabpanel" aria-labelledby="tab-stakes">
+		<h5>Stakes</h5>	
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">Owner</th>
+      		<th scope="col">Value</th>
+			<th scope="col">In base coin</th>
+    	  </tr>
+  		</thead>
+      <tbody id="tab-stakes-body">
+            <!-- STAKES -->
+      </tbody>
+		</table>
+		</div>
+		
+		<div class="tab-pane fade show" id="tab-noblocks" role="tabpanel" aria-labelledby="tab-noblocks">
+		<h5>Blocks</h5>
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">Block</th>
+    	  </tr>
+  		</thead>
+  		<tbody id="tab-noblocks-body">
+            <!-- NO BLOCKS -->
+      </tbody>
+		</table>
+		</div>
+		
+		</div>
+    
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+		
+		<div class="container">
+  			<div class="row">
+    			<div class="col-sm">
+      				<h5>Validators</h5>
+    			</div>
+    			<div class="ml-3">
+      				<div class="btn-group mr-2" role="group">
+					{{if ne $.BtnNow 0}}
+    					<a href="/nodes" class="btn btn-secondary"><<</a>
+						{{if eq $.BtnNow 1}}
+	    				<a href="/nodes" class="btn btn-secondary"><</a>
+						{{else}}
+						<a href="/nodes/{{$.BtnL}}" class="btn btn-secondary"><</a>
+						{{end}}
+					{{else}}
+						<a href="/nodes" class="btn btn-secondary disabled"><<</a>
+						<a href="/nodes/{{$.BtnL}}" class="btn btn-secondary disabled"><</a>
+					{{end}}
+					{{if gt $.BtnRR 0}}
+    					<a href="/nodes/{{$.BtnR}}" class="btn btn-secondary">></a>
+    					<a href="/nodes/{{$.BtnRR}}" class="btn btn-secondary">>></a>
+					{{else}}
+						<a href="/nodes/{{$.BtnR}}" class="btn btn-secondary disabled">></a>
+    					<a href="/nodes/{{$.BtnRR}}" class="btn btn-secondary disabled">>></a>
+					{{end}}
+  	  				</div>
+    			</div>
+  			</div>
+		</div>
+		
+		<!--BODY PAGE (!!!)-->
+		<table id="example" class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>		
+			  <th scope="col">#</th>
+      	<th scope="col">Node</th>
+      	<th scope="col">Commisson</th>
+      	<th scope="col">Total Stake</th>
+			  <th scope="col">Node status</th>
+      	<th scope="col">Slots (max.1000)</th>
+			  <th scope="col">Uptime</th>
+			  <th scope="col">Age</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i, $v := .AllCandidates}}
+    	  <tr onclick="viewWin({{$v.PubKey}});" style="cursor: pointer;">
+			<th scope="row">{{$v.RatingID}}</th>
+			{{if ne $v.ValidatorLogoImg ""}}
+			<td><img src="{{$v.ValidatorLogoImg}}" alt="" style="width: 32px;height: 32px;position: relative;top: 2px;"> <b>{{$v.ValidatorName}}</b></td>
+			{{else}}
+			<td>{{$v.PubKeyMin}}</td>
+			{{end}}
+      		<td>
+          {{if eq $v.Commission $v.CommissionNow}}
+				    {{$v.Commission}}%
+			    {{else}}
+				    <strike>{{$v.Commission}}%</strike> <b>{{$v.CommissionNow}}%</b>
+			    {{end}}
+          </td>
+          
+	        <td>{{printf "%.2f" $v.TotalStake}} {{$.CoinMinter}}</td>
+          <td>
+            {{if eq $v.StatusInt 77}}
+            <span class="badge badge-success">Validator</span>
+            {{else}}
+            {{if eq $v.StatusInt 2}}
+            <span class="badge badge-warning">Сhallenger</span>
+            {{else}}
+            <span class="badge badge-danger">Candidate</span>
+            {{end}}
+            {{end}}
+          </td>
+      		<td>{{$v.AmntSlots}}</td>
+			<td><i class="far fa-clock"></i>{{printf "%.2f" $v.Uptime}}%<br><i class="fab fa-gripfire" style="color:red;"></i>{{$v.AmntSlashed}} <i class="fas fa-th-large" style="color:gray;"></i>{{$v.AmnNoBlocks}}</td>
+			<td>{{$v.Age}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+	  </table>
+    
+    <script>
+    
+    function viewWin(pubkey) {
+      console.log("node #"+pubkey);
+      $('#modal-title-name').html(pubkey);
+      $('#xModalNode').modal('show');
+      
+      $.getJSON('/api/v1/node/'+pubkey, function(data) {
+        console.log(data);
+        // Проверяем, что корректные данные получили
+        if(!data.status){
+          alert(data.err_msg);
+          $('#xModalNode').modal('hide');
+        } else {
+          // TODO: Засовываем полученные значения в форму
+          _CoinMinter="MNT";
+          
+          //Очищаем от старых данных:
+          $("#tab-stakes-body").html("");
+          $("#tab-noblocks-body").html("");
+          $("#modal-tab-nav-stakes").hide();
+          $("#modal-tab-nav-noblocks").hide();
+          $('#modal-general-info-desc-view').hide();
+          $('#modal-general-info-url-view').hide();
+          
+          
+          $('#modal-title-update').html("Update: "+data.node.time_update);
+          
+          if(data.node.validator_logo_img != "") {
+            $('#modal-title-name').html('<img src="'+data.node.validator_logo_img+'" alt="" style="width: 32px;height: 32px;position: relative;top: 2px;"> <b>'+data.node.validator_name+'</b>');
+          } else {
+            $('#modal-title-name').html(data.node.pub_key_min);
+          }
+          
+          if(data.node.status==77) {
+            // 77
+            $('#modal-general-info-status').html('<span class="badge badge-success">Validator</span>');
+          } else if(data.node.status==2) {
+            // 2
+            $('#modal-general-info-status').html('<span class="badge badge-warning">Сhallenger</span>');
+          } else {
+            $('#modal-general-info-status').html('<span class="badge badge-danger">Candidate</span>');
+          }
+          
+          if(data.node.validator_url!="") {
+            console.log('URL='+data.node.validator_url);
+            $('#modal-general-info-url').html('<a href="'+data.node.validator_url+'">'+data.node.validator_url+'</a>');
+            $('#modal-general-info-url-view').show();
+          }
+          
+          if(data.node.validator_desciption!="") {
+            $('#modal-general-info-desc').html(data.node.validator_desciption);
+            $('#modal-general-info-desc-view').show();
+          }
+      		
+          $('#modal-general-info-pubkey').html('<a href="/node/'+data.node.pub_key+'">'+data.node.pub_key+'</a>');
+          $('#modal-general-info-uptime').html(''+data.node.uptime+'%');
+          $('#modal-general-info-block').html('<a href="/block/'+data.node.created_at_block+'">'+data.node.created_at_block+'<a/> ('+data.node.created+')');
+          $('#modal-general-info-owner').html('<a href="/address/'+data.node.owner_address+'">'+data.node.owner_address+'<a/>');
+          if(data.node.commission!=data.node.commission_now) {
+            $('#modal-general-info-comission').html('<strike>'+data.node.commission+'%</strike> <b>'+data.node.commission_now+'%</b>');
+          } else {
+            $('#modal-general-info-comission').html(''+data.node.commission+'%');
+          }          
+          $('#modal-general-info-stakes').html(''+data.node.total_stake_f32+' '+_CoinMinter);      		
+          $('#modal-general-info-slots').html(''+data.node.stakes.length+'/1000');      		
+          $('#modal-general-info-amntblocks').html(data.node.amnt_blocks);
+          $('#modal-general-info-amntslashed').html(data.node.amnt_slashed);
+          
+          if(data.node.stakes.length>0) {
+            for (var i = 0; i < data.node.stakes.length; i++) {
+              $("#tab-stakes-body").append("<tr>"+
+                "<td><a href='/address/"+data.node.stakes[i].owner+"'>"+data.node.stakes[i].owner+"<a/></td>"+
+                "<td>"+data.node.stakes[i].value_f32+" "+data.node.stakes[i].coin+"</td>"+
+                "<td>"+data.node.stakes[i].bip_value_f32+" "+_CoinMinter+"</td>"+
+              "</tr>");
+            }
+            $("#modal-tab-nav-stakes").show();
+          }
+          if(data.node.blocks_story.length>0) {
+            for (var i = 0; i < data.node.blocks_story.length; i++) {
+              $("#tab-noblocks-body").append("<tr>"+
+                "<td><a href='/block/"+data.node.blocks_story[i].block_id+"'><b>"+data.node.blocks_story[i].block_type+"</b> - "+data.node.blocks_story[i].block_id+"<a/></td>"+
+              "</tr>");
+            }
+            $("#modal-tab-nav-noblocks").show();
+          }
+          
+          
+          // Показываем контент в модальном-окне
+          $("#modal-loader").hide();
+          $("#modal-general-info").show();
+        }
+      });
+    }
+		</script>
+{{template "_footer" .}}
+
+
+
+
+
+
+
+
+
+

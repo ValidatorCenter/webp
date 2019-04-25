@@ -1,0 +1,305 @@
+{{template "_header" .}}	
+	
+{{range $i, $v := .AllTrns}}
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="xModalTrans{{$v.Hash}}" tabindex="-1" role="dialog" aria-labelledby="xModalTrans{{$v.Hash}}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Transaction Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	  <div class="modal-body">
+	<div class="container-fluid">
+    <div class="row">
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<tbody>
+		  <tr>
+			<th scope="row">Status</th>
+			<td>{{if eq $v.Code 0}}<span class="badge badge-success">Success</span>{{else}}<span class="badge badge-danger">Failure</span>{{end}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Hash</th>
+			<td><a href="/transaction/{{$v.Hash}}">{{$v.Hash}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Block</th>
+			<td><a href="/block/{{$v.Height}}">{{$v.Height}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Nonce</th>
+      		<td>{{$v.Nonce}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Type</th>
+      		<td>{{$v.TypeTxt}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">From</th>
+			<td><a href="/address/{{$v.From}}">{{$v.From}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Fee</th>
+			<td>{{$v.GasFee}} {{$v.GasCoin}}</td>
+    	  </tr>
+		
+		{{if eq $v.Type 1}} <!-- Send -->
+		  <tr>
+			<th scope="row">Coin</th>
+			<td><a href="/coin/{{$v.Data.Coin}}">{{$v.Data.Coin}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">To</th>
+			<td><a href="/address/{{$v.Data.To}}">{{$v.Data.To}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value</th>
+      		<td>{{$v.Data.Value}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 2}} <!-- SellCoin -->
+		  <tr>
+			<th scope="row">Coin to Sell</th>
+      		<td><a href="/coin/{{$v.Data.CoinToSell}}">{{$v.Data.CoinToSell}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin to Buy</th>
+      		<td><a href="/coin/{{$v.Data.CoinToBuy}}">{{$v.Data.CoinToBuy}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value to Sell</th>
+      		<td>{{$v.Data.ValueToSell}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Return</th>
+      		<td>{{$v.TxReturn}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 3}} <!-- SellAllCoin -->
+		  <tr>
+			<th scope="row">Coin to Sell</th>
+      		<td><a href="/coin/{{$v.Data.CoinToSell}}">{{$v.Data.CoinToSell}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin to Buy</th>
+      		<td><a href="/coin/{{$v.Data.CoinToBuy}}">{{$v.Data.CoinToBuy}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value to Sell</th>
+      		<td>{{$v.TxSellAmount}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Return</th>
+      		<td>{{$v.TxReturn}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 4}} <!-- BuyCoin -->
+		  <tr>
+			<th scope="row">Coin to Buy</th>
+			<td><a href="/coin/{{$v.Data.CoinToBuy}}">{{$v.Data.CoinToBuy}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin to Sell</th>
+      		<td><a href="/coin/{{$v.Data.CoinToSell}}">{{$v.Data.CoinToSell}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value to Buy</th>
+      		<td>{{$v.Data.ValueToBuy}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Return</th>
+      		<td>{{$v.TxReturn}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 5}} <!-- CreateCoin -->
+		  <tr>
+			<th scope="row">Name</th>
+      		<td>{{$v.Data.Name}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Symbol</th>
+      		<td><a href="/coin/{{$v.Data.CoinSymbol}}">{{$v.Data.CoinSymbol}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">CRR</th>
+      		<td>{{$v.Data.ConstantReserveRatio}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Initial amount</th>
+      		<td>{{$v.Data.InitialAmount}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Initial reserve</th>
+      		<td>{{$v.Data.InitialReserve}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 6}} <!-- DeclareCandidacy -->
+		  <tr>
+			<th scope="row">Address</th>
+			<td><a href="/address/{{$v.Data.Address}}">{{$v.Data.Address}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Commission</th>
+      		<td>{{$v.Data.Commission}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin</th>
+      		<td><a href="/coin/{{$v.Data.Coin}}">{{$v.Data.Coin}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Stake</th>
+      		<td>{{$v.Data.Stake}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 7}} <!-- Delegate -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin</th>
+			<td><a href="/coin/{{$v.Data.Coin}}">{{$v.Data.Coin}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Stake</th>
+      		<td>{{$v.Data.Stake}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 8}} <!-- Unbond -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin</th>
+      		<td><a href="/coin/{{$v.Data.Coin}}">{{$v.Data.Coin}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value</th>
+      		<td>{{$v.Data.Value}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 9}} <!-- RedeemCheck -->
+		  <tr>
+			<th scope="row">RawCheck</th>
+      		<td>{{$v.Data.RawCheck}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Proof</th>
+      		<td>{{$v.Data.Proof}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 10}} <!-- SetCandidateOn -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 11}} <!-- SetCandidateOff -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 12}} <!-- CreateMultisig -->
+		{{end}}
+    
+    {{if eq $v.Type 13}} <!-- MultiSend -->
+      {{range $i1, $v1 := $v.Data.List}}
+		    <tr>
+			    <th scope="row">Coin</th>
+			    <td><a href="/coin/{{$v1.Coin}}">{{$v1.Coin}}</a></td>
+    	  </tr>
+		    <tr>
+			    <th scope="row">To</th>
+			    <td><a href="/address/{{$v1.To}}">{{$v1.To}}<a/></td>
+    	  </tr>
+		    <tr>
+			    <th scope="row">Value</th>
+      		<td>{{$v1.Value}}</td>
+    	  </tr>
+      {{end}}
+		{{end}}
+		
+		
+		{{if ne $v.Payload ""}}
+		  <tr>
+			<th scope="row">Comment</th>
+      		<td>{{$v.Payload}}</td>
+    	  </tr>
+		{{end}}
+		  
+  		</tbody>
+		</table>
+	
+	</div>
+	</div>
+	  </div>
+    </div>
+  </div>
+</div>
+{{end}}
+
+
+    
+		
+		<div class="container" style="padding-bottom: 10px;">
+  			<div class="row">
+    			<div class="col-sm">
+      				<h5>Transactions</h5>
+    			</div>
+    			<div class="ml-3">
+      				<div class="btn-group mr-2" role="group">
+					{{if ne $.BtnNow 0}}
+    					<a href="/transactions" class="btn btn-secondary"><<</a>
+	    				<a href="/transactions/{{$.BtnL}}" class="btn btn-secondary"><</a>
+					{{end}}
+					{{if gt $.BtnRR 0}}
+    					<a href="/transactions/{{$.BtnR}}" class="btn btn-secondary">></a>
+    					<a href="/transactions/{{$.BtnRR}}" class="btn btn-secondary">>></a>
+					{{end}}
+  	  				</div>
+    			</div>
+  			</div>
+		</div>
+	  <table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>		
+      		<th scope="col">TxHash</th>
+      		<th scope="col">Block</th>
+      		<th scope="col">From</th>
+			<th scope="col">Type</th>
+			<th scope="col">Amount</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i, $v := .AllTrns}}
+    	  <tr onclick="$('#xModalTrans{{$v.Hash}}').modal('show');" style="cursor: pointer;">
+			<td>{{$v.HashMin}}</td>
+      		<td><a href="/block/{{$v.Height}}">{{$v.Height}}<a/></td>
+	        <td><a href="/address/{{$v.From}}">{{$v.FromMin}}<a/></td>
+			<td>{{$v.TypeTxt}}</td>
+			<td>{{$v.Amount}} {{$.CoinMinter}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+	  </table>
+	
+{{template "_footer" .}}

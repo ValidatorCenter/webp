@@ -1,0 +1,202 @@
+{{template "_header" .}}
+
+{{if .AlertMsg}}
+<div class="alert alert-{{.AlertType}} alert-dismissible fade show" role="alert">
+	<strong>{{.AlertAct}}</strong> {{if eq .AlertType "success"}} <a href="/transaction/{{.AlertMsg}}" target="_blank">{{.AlertMsg}}</a> {{else}} {{.AlertMsg}} {{end}}
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+</div>
+{{end}}
+
+{{if gt (len .MyNodes) 0}}
+	<h2>Мои мастерноды</h2>
+	  <table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+			<th scope="col"></th>
+      		<th scope="col">Node</th>
+      		<th scope="col">Commisson</th>
+      		<th scope="col">Total Stake</th>
+			<th scope="col">Node status</th>
+			<th scope="col">Uptime</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i, $v := .MyNodes}}
+    	  <tr>
+			<td>
+				<div class="btn-group" role="group">
+				<form method="post">
+					<input type="hidden" name="typeAct" value="START">
+					<input type="hidden" name="inputPubKey" value="{{$v.PubKey}}">
+					<input type="hidden" name="inputFeeCoin" value="{{$.CoinMinter}}">  
+					<button type="submit" class="btn btn-success">&#9654;</button>
+				</form>
+				<form method="post">
+					<input type="hidden" name="typeAct" value="STOP">
+					<input type="hidden" name="inputPubKey" value="{{$v.PubKey}}">
+					<input type="hidden" name="inputFeeCoin" value="{{$.CoinMinter}}">  
+					<button type="submit" class="btn btn-danger">&#9724;</button>
+				</form>
+				</div>
+			</td>
+			<td><a href="/node/{{$v.PubKey}}">{{$v.PubKeyMin}}</a></td>
+      		<td>{{$v.Commission}}%</td>
+	        <td>{{$v.TotalStake}} {{$.CoinMinter}}</td>
+          <td>
+            {{if eq $v.StatusInt 77}}
+            <span class="badge badge-success">Validator</span>
+            {{else}}
+            {{if eq $v.StatusInt 2}}
+            <span class="badge badge-warning">Сhallenger</span>
+            {{else}}
+            <span class="badge badge-danger">Candidate</span>
+            {{end}}
+            {{end}}
+          </td>
+			<td><i class="far fa-clock"></i>{{$v.Uptime}}%<br><i class="fab fa-gripfire" style="color:red;"></i>{{$v.AmntSlashed}} <i class="fas fa-th-large" style="color:gray;"></i>{{$v.AmnNoBlocks}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+	  </table>
+{{end}}
+
+<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Декларирование</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Включение</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Выключение</a>
+  </li>
+</ul>
+<div class="tab-content" id="pills-tabContent">
+ 
+<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+<h2>Декларирование новой мастерноды</h2>
+
+<p>Если вы хотите создать свою собственную мастерноду, то вы можете декларировать кандидатуру здесь.</p>
+
+<form method="post">
+  <input type="hidden" name="typeAct" value="DECLARE">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputAddrs">Адрес</label>
+      <input type="text" class="form-control" id="inputAddrs" name="inputAddrs" placeholder="Адрес владельца мастерноды, куда будет приходить награда">
+    </div>
+	<div class="form-group col-md-2">
+      <label for="inputAmnt">Количество</label>
+      <input type="text" class="form-control" id="inputAmnt" name="inputAmnt">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputCoin">Монета</label>
+      <select id="inputCoin" class="form-control" name="inputCoin">
+        {{range $i, $v := .AllCoins}}
+		<option value="{{$i}}">{{$i}} ({{$v}})</option>
+		{{end}}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <label for="inputPubKey">Публичный ключ</label>
+      <input type="text" class="form-control" id="inputPubKey" name="inputPubKey">
+    </div>
+	<div class="form-group col-md-4">
+      <label for="inputCommiss">Комиссия, %</label>
+      <input type="text" class="form-control" id="inputCommiss" name="inputCommiss">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <label for="inputMsg">Сообщение</label>
+      <input type="text" class="form-control" id="inputMsg" name="inputMsg" placeholder="Сообщение">
+    </div>
+	<div class="form-group col-md-4">
+      <label for="inputFeeCoin">Монета для оплаты комиссии</label>
+      <select id="inputFeeCoin" name="inputFeeCoin" class="form-control">
+        {{range $i, $v := .AllCoins}}
+		<option value="{{$i}}">{{$i}} ({{$v}})</option>
+		{{end}}
+      </select>
+    </div>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Декларировать мастерноду</button>
+</form>
+</div>
+
+
+<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+<h2>«Включение» мастерноды</h2>
+
+<p>Эта транзакция внесет вашу ноду в список активных валидаторов. Эту транзакцию можно произвести только с того аккаунта, с которого была декларирована нода. </p>
+
+<form method="post">
+  <input type="hidden" name="typeAct" value="START">
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <label for="inputPubKey">Публичный ключ</label>
+      <input type="text" class="form-control" id="inputPubKey"  name="inputPubKey">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <label for="inputMsg">Сообщение</label>
+      <input type="text" class="form-control" id="inputMsg" name="inputMsg" placeholder="Сообщение">
+    </div>
+	<div class="form-group col-md-4">
+      <label for="inputFeeCoin">Монета для оплаты комиссии</label>
+      <select id="inputFeeCoin" name="inputFeeCoin" class="form-control">
+        {{range $i, $v := .AllCoins}}
+		<option value="{{$i}}">{{$i}} ({{$v}})</option>
+		{{end}}
+      </select>
+    </div>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">«Включить» мастерноду</button>
+</form>
+</div>
+
+
+<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+<h2>«Выключение» мастерноды</h2>
+
+<p>Если вы больше не хотите, чтобы ваша нода была в списке активных валидаторов, то заполните эту форму. Эту транзакцию можно произвести только с того аккаунта, с которого была декларирована нода.</p>
+
+<form method="post">
+  <input type="hidden" name="typeAct" value="STOP">
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <label for="inputPubKey">Публичный ключ</label>
+      <input type="text" class="form-control" id="inputPubKey"  name="inputPubKey">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <label for="inputMsg">Сообщение</label>
+      <input type="text" class="form-control" id="inputMsg" name="inputMsg" placeholder="Сообщение">
+    </div>
+	<div class="form-group col-md-4">
+      <label for="inputFeeCoin">Монета для оплаты комиссии</label>
+      <select id="inputFeeCoin" name="inputFeeCoin" class="form-control">
+        {{range $i, $v := .AllCoins}}
+		<option value="{{$i}}">{{$i}} ({{$v}})</option>
+		{{end}}
+      </select>
+    </div>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">«Выключить» мастерноду</button>
+</form>
+</div>
+
+</div>
+
+{{template "_footer" .}}

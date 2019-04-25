@@ -1,0 +1,102 @@
+
+	</main>
+	
+	<!-- Footer -->
+	<footer>
+        <div class="container text-center">
+            <p>Copyright &copy; Validator Center (2018-2019) [Sync-{{.ChainNet}}:{{.LastSync}}/{{.Current}}]</p>
+        </div>
+    </footer>
+	
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Sign in with seed phrase</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	<form action="/auth" method="post">
+      <div class="modal-body">
+  			<div class="form-group">
+    			<label for="exampleInputSeed">Your seed phrase</label>
+    			<input type="text" class="form-control" name="seed_phrase" id="exampleInputSeed" aria-describedby="seedHelp" placeholder="Enter your seed phrase">
+    			<small id="seedHelp" class="form-text text-muted">You can register a new account by generating a new seed-phrase. On it, you can also log in to Minter's wallet.</small>
+		    </div>  
+  			<button id="btnGenerateSeed" type="button" class="btn btn-outline-success" title="REGISTER WITH SEED PHRASE">Generate Seed Phrase</button>
+			
+			<div id="areaSeedData" style="display:none;">
+				<p id="areaSeedDataTxt"></p>
+				<button id="areaSeedDataBtn" type="button" class="btn btn-primary" style="border-color: #D15C22;background-color:#D15C22" role="button" data-clipboard-target="#areaSeedDataTxt"><i class="far fa-copy"></i> Скопировать</button>
+			</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		<button type="submit" class="btn btn-primary">Sign in</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>
+	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/jquery-3.2.1.min.js"><\/script>')</script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+	
+	<!-- https://datatables.net/examples/index -->	
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>	
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/sl-1.2.6/datatables.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+	
+	<script>
+	$(document).ready(function() {
+		
+		$("#btnGenerateSeed").on('click',function(){
+			$(this).hide();
+			$.getJSON('/api/v1/newMnemonic', function(data) {
+				$("#exampleInputSeed").val(data.mnemonic);
+				$("#areaSeedDataTxt").html(data.mnemonic);
+				//$("#areaSeedDataBtn").attr("data-clipboard-text",data.mnemonic);
+				$("#areaSeedData").show();
+			});
+		});
+		new ClipboardJS('.btn');
+		
+    	$('#example').DataTable( {
+			"lengthMenu": [ 25, 50, 100 ],
+        	/*"language": {
+  				"processing": "Подождите...",
+  				"search": "Поиск:",
+  				"lengthMenu": "Показать _MENU_ записей",
+  				"info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+  				"infoEmpty": "Записи с 0 до 0 из 0 записей",
+  				"infoFiltered": "(отфильтровано из _MAX_ записей)",
+  				"infoPostFix": "",
+  				"loadingRecords": "Загрузка записей...",
+  				"zeroRecords": "Записи отсутствуют.",
+  				"emptyTable": "В таблице отсутствуют данные",
+  				"paginate": {
+    				"first": "Первая",
+				    "previous": "Предыдущая",
+    				"next": "Следующая",
+    				"last": "Последняя"
+  				},
+  				"aria": {
+    				"sortAscending": ": активировать для сортировки столбца по возрастанию",
+    				"sortDescending": ": активировать для сортировки столбца по убыванию"
+  				}*/			
+    	});
+		
+		$('#exampleModalCenter').on('shown.bs.modal', function () {
+			//$('#myInput').trigger('focus')
+		})
+	} );
+	</script>
+  </body>
+</html>

@@ -1,0 +1,247 @@
+{{template "_header" .}}
+		
+		<div class="container">
+  			<div class="row">
+    			<div class="col-sm">
+      				<h5><a href="/transactions" class="btn btn-outline-success btn-minter my-2 my-sm-0" type="button" style="border-radius: 20px;">←</a>Transaction</h5>
+    			</div>
+    			
+  			</div>
+		</div>
+
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<tbody>
+		  <tr>
+			<th scope="row">Status</th>
+			<td>{{if eq $.OneTrns.Code 0}}<span class="badge badge-success">Success</span>{{else}}<span class="badge badge-danger">Failure</span>{{end}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Hash</th>
+			<td>{{$.OneTrns.Hash}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Block</th>
+			<td><a href="/block/{{$.OneTrns.Height}}">{{$.OneTrns.Height}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Nonce</th>
+      		<td>{{$.OneTrns.Nonce}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Type</th>
+      		<td>{{$.OneTrns.TypeTxt}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">From</th>
+			<td><a href="/address/{{$.OneTrns.From}}">{{$.OneTrns.From}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Fee</th>
+			<td>{{$.OneTrns.GasFee}} {{$.OneTrns.GasCoin}}</td>
+    	  </tr>
+		
+		{{if eq $.OneTrns.Type 1}} <!-- Send -->
+		  <tr>
+			<th scope="row">Coin</th>
+			<td><a href="/coin/{{$.OneTrns.Data.Coin}}">{{$.OneTrns.Data.Coin}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">To</th>
+			<td><a href="/address/{{$.OneTrns.Data.To}}">{{$.OneTrns.Data.To}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value</th>
+      		<td>{{$.OneTrns.Data.Value}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 2}} <!-- SellCoin -->
+		  <tr>
+			<th scope="row">Coin to Sell</th>
+      		<td><a href="/coin/{{$.OneTrns.Data.CoinToSell}}">{{$.OneTrns.Data.CoinToSell}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin to Buy</th>
+      		<td><a href="/coin/{{$.OneTrns.Data.CoinToBuy}}">{{$.OneTrns.Data.CoinToBuy}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value to Sell</th>
+      		<td>{{$.OneTrns.Data.ValueToSell}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Return</th>
+      		<td>{{$.OneTrns.TxReturn}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 3}} <!-- SellAllCoin -->
+		  <tr>
+			<th scope="row">Coin to Sell</th>
+      		<td><a href="/coin/{{$.OneTrns.Data.CoinToSell}}">{{$.OneTrns.Data.CoinToSell}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin to Buy</th>
+      		<td><a href="/coin/{{$.OneTrns.Data.CoinToBuy}}">{{$.OneTrns.Data.CoinToBuy}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value to Sell</th>
+      		<td>{{$.OneTrns.TxSellAmount}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Return</th>
+      		<td>{{$.OneTrns.TxReturn}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 4}} <!-- BuyCoin -->
+		  <tr>
+			<th scope="row">Coin to Buy</th>
+			<td><a href="/coin/{{$.OneTrns.Data.CoinToBuy}}">{{$.OneTrns.Data.CoinToBuy}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin to Sell</th>
+			<td><a href="/coin/{{$.OneTrns.Data.CoinToSell}}">{{$.OneTrns.Data.CoinToSell}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value to Buy</th>
+      		<td>{{$.OneTrns.Data.ValueToBuy}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Return</th>
+      		<td>{{$.OneTrns.TxReturn}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 5}} <!-- CreateCoin -->
+		  <tr>
+			<th scope="row">Name</th>
+      		<td>{{$.OneTrns.Data.Name}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Symbol</th>
+      		<td><a href="/coin/{{$.OneTrns.Data.CoinSymbol}}">{{$.OneTrns.Data.CoinSymbol}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">CRR</th>
+      		<td>{{$.OneTrns.Data.ConstantReserveRatio}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Initial amount</th>
+      		<td>{{$.OneTrns.Data.InitialAmount}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Initial reserve</th>
+      		<td>{{$.OneTrns.Data.InitialReserve}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 6}} <!-- DeclareCandidacy -->
+		  <tr>
+			<th scope="row">Address</th>
+			<td><a href="/address/{{$.OneTrns.Data.Address}}">{{$.OneTrns.Data.Address}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$.OneTrns.Data.PubKey}}">{{$.OneTrns.Data.PubKey}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Commission</th>
+      		<td>{{$.OneTrns.Data.Commission}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin</th>
+      		<td><a href="/coin/{{$.OneTrns.Data.Coin}}">{{$.OneTrns.Data.Coin}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Stake</th>
+      		<td>{{$.OneTrns.Data.Stake}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 7}} <!-- Delegate -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$.OneTrns.Data.PubKey}}">{{$.OneTrns.Data.PubKey}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin</th>
+      		<td><a href="/coin/{{$.OneTrns.Data.Coin}}">{{$.OneTrns.Data.Coin}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Stake</th>
+      		<td>{{$.OneTrns.Data.Stake}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 8}} <!-- Unbond -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$.OneTrns.Data.PubKey}}">{{$.OneTrns.Data.PubKey}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin</th>
+			<td><a href="/coin/{{$.OneTrns.Data.Coin}}">{{$.OneTrns.Data.Coin}}</a></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value</th>
+      		<td>{{$.OneTrns.Data.Value}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 9}} <!-- RedeemCheck -->
+		  <tr>
+			<th scope="row">RawCheck</th>
+      		<td>{{$.OneTrns.Data.RawCheck}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Proof</th>
+      		<td>{{$.OneTrns.Data.Proof}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 10}} <!-- SetCandidateOn -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$.OneTrns.Data.PubKey}}">{{$.OneTrns.Data.PubKey}}<a/></td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 11}} <!-- SetCandidateOff -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$.OneTrns.Data.PubKey}}">{{$.OneTrns.Data.PubKey}}<a/></td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $.OneTrns.Type 12}} <!-- CreateMultisig -->
+		{{end}}
+    
+    {{if eq $.OneTrns.Type 13}} <!-- MultiSend -->
+      {{range $i, $v := $.OneTrns.Data.List}}
+        <tr>
+		  	  <th scope="row">Coin</th>
+			    <td><a href="/coin/{{$v.Coin}}">{{$v.Coin}}</a></td>
+    	  </tr>
+		    <tr>
+			    <th scope="row">To</th>
+			    <td><a href="/address/{{$v.To}}">{{$v.To}}<a/></td>
+    	  </tr>
+		    <tr>
+			    <th scope="row">Value</th>
+      	  <td>{{$v.Value}}</td>
+    	  </tr>
+      {{end}}
+		{{end}}
+		
+		
+		{{if ne $.OneTrns.Payload ""}}
+		  <tr>
+			<th scope="row">Comment</th>
+      		<td>{{$.OneTrns.Payload}}</td>
+    	  </tr>
+		{{end}}
+		  
+  		</tbody>
+		</table>
+
+{{template "_footer" .}}

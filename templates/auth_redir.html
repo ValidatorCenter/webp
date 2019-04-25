@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        {{if .AlertMsg}}
+        <meta http-equiv="refresh" content="0; url=/?alert={{.AlertType}}&act={{.AlertAct}}&msg={{.AlertMsg}}">
+        <script type="text/javascript">
+            window.location.href = "/?alert={{.AlertType}}&act={{.AlertAct}}&msg={{.AlertMsg}}"
+        </script>
+        {{else}}
+        <meta http-equiv="refresh" content="0; url=/">
+        <script type="text/javascript">
+            window.location.href = "/"
+        </script>
+        {{end}}
+        <title>Page Redirection - Minter Validator Center</title>
+    </head>
+    <body></body>
+</html>

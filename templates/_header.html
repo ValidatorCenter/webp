@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Kodnik">
+    <meta name="copyright" content="(c) 2018 Minter Validator Center">
+    <meta name="keywords" content="minter, validator, center, blockchain, money, cryptomoney, masternode, минтер, валидатор, центр, блокчейн">
+    <meta name="description" content="Minter validator center">
+   
+    <meta name="google-site-verification" content="jSsKlhfgpvKRZWtLpaH4bXIVx5mPcE65mMiDGITnfb0" /> 
+    <meta name='yandex-verification' content='5b59a12693a6b658' />
+    <meta name="msvalidate.01" content="E2B51081850FFEA4EC6219BA0D1B22A9" />
+    <meta name='wmail-verification' content='1bc91180bc94ba6c394a9d997a4e5ad8' />
+	
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <title>{{.Title}} - Minter Validator Center</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Font Awesome https://fontawesome.com -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/navbar-top-fixed.css" rel="stylesheet">
+	
+	<style>
+	.btn-primary {
+		background-color: #d66c38;
+		border-color: #d66c38;
+	}
+	a {
+		color: #d66c38;
+	}
+	.btn-minter {
+		color: #d66c38;
+		border-color: #d66c38;
+	}
+	.btn-minter:active, .btn-minter:not(:disabled):not(.disabled).active, .btn-minter:not(:disabled):not(.disabled):active {
+    	color: #fff;
+		border-color: #d66c38;
+		background-color: #d66c38;
+	}
+	.btn-minter:hover {
+		color: #fff;
+		border-color: #d66c38;
+		background-color: #d66c38;
+	}
+	.btn-minter:focus, .btn-minter:not(:disabled):not(.disabled).active:focus, .btn-minter:not(:disabled):not(.disabled):active:focus, .show > .btn-minter.dropdown-toggle:focus {
+		box-shadow: none;
+	}
+	.btn-minter:not(:disabled):not(.disabled).active, .btn-minter:not(:disabled):not(.disabled):active, .show > .btn-minter.dropdown-toggle {
+		color: #fff;
+		border-color: #d66c38;
+		background-color: #d66c38;
+	}
+	</style>
+  
+  <style>
+  /*CSS-Loader*/
+.cssload-loader {
+	position: relative;
+	left: calc(50% - 31px);
+	width: 62px;
+	height: 62px;
+	border-radius: 50%;
+		-o-border-radius: 50%;
+		-ms-border-radius: 50%;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+	perspective: 780px;
+}
+
+.cssload-inner {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+		-o-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+	border-radius: 50%;
+		-o-border-radius: 50%;
+		-ms-border-radius: 50%;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;	
+}
+
+.cssload-inner.cssload-one {
+	left: 0%;
+	top: 0%;
+	animation: cssload-rotate-one 1.15s linear infinite;
+		-o-animation: cssload-rotate-one 1.15s linear infinite;
+		-ms-animation: cssload-rotate-one 1.15s linear infinite;
+		-webkit-animation: cssload-rotate-one 1.15s linear infinite;
+		-moz-animation: cssload-rotate-one 1.15s linear infinite;
+	border-bottom: 3px solid rgb(0,0,0);
+}
+
+.cssload-inner.cssload-two {
+	right: 0%;
+	top: 0%;
+	animation: cssload-rotate-two 1.15s linear infinite;
+		-o-animation: cssload-rotate-two 1.15s linear infinite;
+		-ms-animation: cssload-rotate-two 1.15s linear infinite;
+		-webkit-animation: cssload-rotate-two 1.15s linear infinite;
+		-moz-animation: cssload-rotate-two 1.15s linear infinite;
+	border-right: 3px solid rgb(0,0,0);
+}
+
+.cssload-inner.cssload-three {
+	right: 0%;
+	bottom: 0%;
+	animation: cssload-rotate-three 1.15s linear infinite;
+		-o-animation: cssload-rotate-three 1.15s linear infinite;
+		-ms-animation: cssload-rotate-three 1.15s linear infinite;
+		-webkit-animation: cssload-rotate-three 1.15s linear infinite;
+		-moz-animation: cssload-rotate-three 1.15s linear infinite;
+	border-top: 3px solid rgb(0,0,0);
+}
+
+
+@keyframes cssload-rotate-one {
+	0% {
+		transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@-o-keyframes cssload-rotate-one {
+	0% {
+		-o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		-o-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@-ms-keyframes cssload-rotate-one {
+	0% {
+		-ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		-ms-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@-webkit-keyframes cssload-rotate-one {
+	0% {
+		-webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		-webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@-moz-keyframes cssload-rotate-one {
+	0% {
+		-moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+	}
+	100% {
+		-moz-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+	}
+}
+
+@keyframes cssload-rotate-two {
+	0% {
+		transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@-o-keyframes cssload-rotate-two {
+	0% {
+		-o-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		-o-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@-ms-keyframes cssload-rotate-two {
+	0% {
+		-ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		-ms-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@-webkit-keyframes cssload-rotate-two {
+	0% {
+		-webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		-webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@-moz-keyframes cssload-rotate-two {
+	0% {
+		-moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+	}
+	100% {
+		-moz-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+	}
+}
+
+@keyframes cssload-rotate-three {
+	0% {
+		transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+
+@-o-keyframes cssload-rotate-three {
+	0% {
+		-o-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		-o-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+
+@-ms-keyframes cssload-rotate-three {
+	0% {
+		-ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		-ms-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+
+@-webkit-keyframes cssload-rotate-three {
+	0% {
+		-webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		-webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+
+@-moz-keyframes cssload-rotate-three {
+	0% {
+		-moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+	}
+	100% {
+		-moz-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+	}
+}
+</style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark"><!--style="background-color: #2c2c2c;"-->
+      <a class="navbar-brand" href="/"><img alt="Coin logotype" src="/s/img/valid_center_n0back_64.png" width="36" height="36"> Validator.Center</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+		<ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+	      <li class="nav-item {{if eq .Title "Block"}}active{{end}}{{if eq .Title "Blocks"}}active{{end}}">
+	        <a class="nav-link" href="/blocks">Blocks</a>
+	      </li>
+	      <li class="nav-item {{if eq .Title "Transaction"}}active{{end}}{{if eq .Title "Transactions"}}active{{end}}">
+	        <a class="nav-link" href="/transactions">Transactions</a>
+	      </li>
+	      <li class="nav-item {{if eq .Title "Node"}}active{{end}}{{if eq .Title "Nodes"}}active{{end}}">
+	        <a class="nav-link" href="/nodes">Nodes</a>
+	      </li>
+	      <li class="nav-item {{if eq .Title "Coin"}}active{{end}}{{if eq .Title "Coins"}}active{{end}}">
+	        <a class="nav-link" href="/coins">Coins</a>
+	      </li>
+		  
+		  {{if eq .Title "Coin"}} <!-- Send -->
+		  <li class="nav-item dropdown">
+			  <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				{{.Ticker1}}/{{.Ticker2}}</a>
+			  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
+				{{range $i, $v := .Other2Coins}}
+				<a class="dropdown-item" href="/coin/{{$v}}" title="{{$v}}">{{$v}}</a>
+				{{end}}
+			  </div>
+		  </li>
+		  {{end}}
+ 	  	</ul>
+		
+      {{if .UsrAuth}}
+			<div class="dropdown" style="margin-left: auto;">
+			<button id="btnUsrTop" class="btn btn-outline-success btn-minter dropdown-toggle my-2 my-sm-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="/*margin-left: auto;*/">{{.UsrName}}</button>
+			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnUsrTop">
+				<a class="dropdown-item" href="/address/{{.UsrAddress}}">Address</a>
+    			<a class="dropdown-item" href="/logout">Logout</a>
+  			</div>
+			</div>
+		{{else}}
+            <button class="btn btn-outline-success btn-minter my-2 my-sm-0" type="button" data-toggle="modal" data-target="#exampleModalCenter" style="/*margin-left: auto;*/">Login</button>
+		{{end}}
+        <!--</form>-->
+      </div>
+    </nav>
+
+    {{if .UsrAuth}}
+<style>
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 58px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 58px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+/*
+ * Content
+ */
+
+[role="main"] {
+  padding-top: 48px; /* Space for fixed navbar */
+}
+</style>
+	<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+	 	  <li class="nav-item">
+            <a class="nav-link" href="/address/{{.UsrAddress}}">
+              <i class="fas fa-user"></i> User
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/sendcoin">
+              <i class="fas fa-share-square"></i> Send coin
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="/delegation" title="Делегирование">
+              <i class="fas fa-university"></i> Delegation
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="/masternode" title="Мастернода">
+              <i class="fas fa-server"></i> Masternode
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="/coiner" title="Создание монет">
+              <i class="fas fa-coins"></i> Coiner
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link disabled" href="/checks" title="Чеки">
+              <i class="fas fa-money-check-alt"></i> Checks
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link disabled" href="/tasklist" title="Лист заданий">
+              <i class="fas fa-clipboard-check"></i> Task list
+            </a>
+          </li>
+		  <!--<li class="nav-item">
+            <a class="nav-link disabled" href="#" title="Адресная книга" style="pointer-events: none; cursor: default; color:#999;">
+              <i class="fas fa-address-book"></i> Address book
+            </a>
+          </li>
+		
+		  <li class="nav-item">
+            <a class="nav-link" href="#" title="Заказы на покупку/продажу монет">
+              <i class="fas fa-shopping-cart"></i> Orders
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="#" title="Портфель">
+              <i class="fas fa-briefcase"></i> Portfolio
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="#" title="Транзакции пользователя">
+              <i class="fas fa-exchange-alt"></i> Transactions
+            </a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link" href="#" title="Глобальная статистика по сети Minter">
+              <i class="fab fa-connectdevelop"></i> Minter Net
+            </a>
+          </li>		  
+		  <li class="nav-item">
+            <a class="nav-link" href="#" title="Безопастность: логин и секр.фраза">
+              <i class="fas fa-user-shield"></i> Security
+            </a>
+          </li>-->
+        </ul>
+      </div>
+    </nav>
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+	{{else}}
+    <main role="main" class="container">
+	{{end}}

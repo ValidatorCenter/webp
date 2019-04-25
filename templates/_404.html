@@ -1,0 +1,21 @@
+{{template "_header" .}}
+
+<div class="container text-center" style="font-size: 200px;">
+404
+</div>
+
+<script>
+/*$(document).ready(function() {
+  setInterval(function() {
+    cache_clear()
+  }, 10000); //10sec
+});
+
+function cache_clear() {
+  window.location.reload(true);
+  // window.location.reload(); use this if you do not remove cache
+}*/
+setTimeout(function () { location.reload(true); }, 10000); //10sec
+</script>
+
+{{template "_footer" .}}

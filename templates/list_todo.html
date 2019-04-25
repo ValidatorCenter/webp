@@ -1,0 +1,49 @@
+{{template "_header" .}}
+		
+		<div class="container">
+  			<div class="row">
+    			<div class="col-sm">
+      				<h5>ToDo (list)</h5>
+    			</div>
+  			</div>
+		</div>
+		
+		<!--BODY PAGE (!!!)-->
+		<table id="example" class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>		
+      		<th scope="col">Done</th>
+      		<th scope="col">Created</th>
+      		<th scope="col">Исполнен</th>
+			<th scope="col">Type</th>
+      		<th scope="col">Height</th>
+			<th scope="col">PubKey</th>
+			{{if eq $.MyNodes true}}
+			<th scope="col">Address</th>
+			{{end}}
+			<th scope="col">Amount</th>
+			<th scope="col">Comment</th>
+			<th scope="col">TxHash</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i, $v := .AllTodo}}
+    	  <tr>
+			<td>{{if eq $v.Done true}}<span class="badge badge-success">Yes</span>{{else}}<span class="badge badge-warning">No</span>{{end}}</td>
+      		<td>{{$v.Created}}</td>
+      		<td>{{if eq $v.Done true}}{{$v.DoneT}}{{else}}---{{end}}</td>
+			<td>{{$v.Type}}</td>
+      		<td><a href="/block/{{$v.Height}}">{{$v.Height}}</a></td>
+			<td><a href="/node/{{$v.PubKey}}">{{$v.PubKeyMin}}</a></td>
+			{{if eq $.MyNodes true}}
+			<td><a href="/address/{{$v.Address}}">{{$v.AddressMin}}</a></td>
+			{{end}}
+			<td>{{$v.Amount}} {{$.CoinMinter}}</td>
+			<td>{{$v.Comment}}</td>
+			<td>{{if eq $v.Done true}}<a href="/transaction/{{$v.TxHash}}">{{$v.TxHashMin}}</a>{{else}}---{{end}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+	  </table>
+		
+{{template "_footer" .}}

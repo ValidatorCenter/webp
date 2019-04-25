@@ -1,0 +1,65 @@
+{{template "_header" .}}
+
+{{if .AlertMsg}}
+<div class="alert alert-{{.AlertType}} alert-dismissible fade show" role="alert">
+	<strong>{{.AlertAct}}</strong> {{if eq .AlertType "success"}} <a href="/transaction/{{.AlertMsg}}" target="_blank">{{.AlertMsg}}</a> {{else}} {{.AlertMsg}} {{end}}
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+</div>
+{{end}}
+
+<h2>Отправка монет</h2>
+
+<p>Самая простая транзакция. Отправить монеты со своего баланса на другой адрес. Отправляйте монеты кому пожелаете — друзьям, семье, бизнес-партнерам.</p>
+
+<form method="post">
+  <input type="hidden" name="typeAct" value="SEND">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputAddress">Адрес</label>
+      <div class="input-group">
+		<input type="text" class="form-control" aria-label="Text input with dropdown button" id="inputAddress" name="inputAddress">
+  		<div class="input-group-append">
+  		  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Адреса</button>
+    	  <div class="dropdown-menu">
+      		<a class="dropdown-item" href="#">[Управление]</a>
+			<div role="separator" class="dropdown-divider"></div>
+      		  <a class="dropdown-item" href="#">Гриша</a>
+    		  <a class="dropdown-item" href="#">Иван</a>
+    		  <a class="dropdown-item" href="#">Маша</a>
+    		</div>
+ 		</div>
+	  </div>
+    </div>
+	<div class="form-group col-md-2">
+      <label for="inputAmnt">Количество</label>
+      <input type="text" class="form-control" id="inputAmnt" name="inputAmnt">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputCoin">Монета</label>
+      <select id="inputCoin" name="inputCoin" class="form-control">
+        {{range $i, $v := .AllCoins}}
+		<option value="{{$i}}">{{$i}} ({{$v}})</option>
+		{{end}}		
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <label for="inputMsg">Сообщение</label>
+      <input type="text" class="form-control" id="inputMsg" name="inputMsg" placeholder="Сообщение">
+    </div>
+	<div class="form-group col-md-4">
+      <label for="inputFeeCoin">Монета для оплаты комиссии</label>
+      <select id="inputFeeCoin" name="inputFeeCoin" class="form-control">
+        {{range $i, $v := .AllCoins}}
+		<option value="{{$i}}">{{$i}} ({{$v}})</option>
+		{{end}}
+      </select>
+    </div>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Отправить</button>
+</form>
+
+{{template "_footer" .}}

@@ -1,0 +1,167 @@
+{{template "_header" .}}
+		
+		<div class="container">
+  			<div class="row">
+    			<div class="col-sm">
+					<h5><a href="/blocks" class="btn btn-outline-success btn-minter my-2 my-sm-0" type="button" style="border-radius: 20px;">←</a> BLOCK #{{$.OneBlocks.Height}}</h5>
+    			</div>
+  			</div>
+		</div>
+		
+		
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<tbody>
+		  <tr>
+			<th scope="row">Height</th>
+      		<td>{{$.OneBlocks.Height}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">TimeStamp</th>
+      		<td>{{$.OneBlocks.Time}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Hash</th>
+      		<td>Mh{{$.OneBlocks.Hash}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Size</th>
+      		<td>{{$.OneBlocks.Size}} bytes</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Reward</th>
+      		<td>{{$.OneBlocks.BlockReward}} {{$.CoinMinter}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">#Transactions</th>
+      		<td>{{$.OneBlocks.TransactionsAmnt}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">#Validators</th>
+      		<td>{{$.OneBlocks.PrecommitsAmnt}}</td>
+    	  </tr>
+		  <tr>
+      <th scope="row">#Events</th>
+      		<td>{{$.OneBlocks.EventsAmnt}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Proposer</th>
+			  <td>
+        {{if ne $.OneBlocks.ProposerName ""}}
+          <a href="/node/{{$.OneBlocks.Proposer}}"><img src="{{$.OneBlocks.ProposerLogo}}" width="24px"> {{$.OneBlocks.ProposerName}}</a>
+        {{else}}
+          <a href="/node/{{$.OneBlocks.Proposer}}">{{$.OneBlocks.Proposer}}</a>
+        {{end}}
+        </td>
+    	  </tr>
+  		</tbody>
+		</table>		
+		
+		<ul class="nav nav-tabs" id="myTab{{$.OneBlocks.Height}}" role="tablist" style="width: 100%;">
+			{{if gt (len $.OneBlocks.Transactions) 0}}
+  			<li class="nav-item">
+    			<a class="nav-link" id="transactions-tab{{$.OneBlocks.Height}}" data-toggle="tab" href="#transactions{{$.OneBlocks.Height}}" role="tab" aria-controls="transactions{{$.OneBlocks.Height}}" aria-selected="true">Transactions</a>
+  			</li>
+			{{end}}
+			
+			{{if gt (len $.OneBlocks.Validators) 0}}
+  			<li class="nav-item">
+    			<a class="nav-link" id="precommits-tab{{$.OneBlocks.Height}}" data-toggle="tab" href="#precommits{{$.OneBlocks.Height}}" role="tab" aria-controls="precommits{{$.OneBlocks.Height}}" aria-selected="false">Validators</a>
+  			</li>
+			{{end}}
+			
+			{{if gt (len $.OneBlocks.Events) 0}}
+  			<li class="nav-item">
+    			<a class="nav-link" id="events-tab{{$.OneBlocks.Height}}" data-toggle="tab" href="#events{{$.OneBlocks.Height}}" role="tab" aria-controls="events{{$.OneBlocks.Height}}" aria-selected="false">Events</a>
+  			</li>
+			{{end}}
+		</ul>
+		
+		<div class="tab-content" id="myTabContent">
+		
+		{{if gt (len $.OneBlocks.Transactions) 0}}
+		<div class="tab-pane fade show" id="transactions{{$.OneBlocks.Height}}" role="tabpanel" aria-labelledby="transactions-tab{{$.OneBlocks.Height}}">
+		<h5>Transactions</h5>	
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">TxHash</th>
+      		<th scope="col">Block</th>
+			<th scope="col">Age</th>
+			<th scope="col">From</th>
+			<th scope="col">Type</th>
+			<th scope="col">Amount</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i1, $v1 := $.OneBlocks.Transactions}}
+    	  <tr>
+			<td><a href="/transaction/{{$v1.Hash}}">{{$v1.HashMin}}<a/></td>
+      		<td>{{$.OneBlocks.Height}}</td>
+			<td>{{$.OneBlocks.Time}}</td>
+			<td><a href="/address/{{$v1.From}}">{{$v1.FromMin}}<a/></td>
+			<td>{{$v1.TypeTxt}}</td>
+			<td>{{$v1.Amount}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+		</table>
+		</div>
+		{{end}}
+		
+		{{if gt (len $.OneBlocks.Validators) 0}}
+		<div class="tab-pane fade show" id="precommits{{$.OneBlocks.Height}}" role="tabpanel" aria-labelledby="precommits-tab{{$.OneBlocks.Height}}">
+		<h5>Validators</h5>
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">Address</th>
+      		<th scope="col">Public Key</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i2, $v2 := $.OneBlocks.Validators}}
+    	  <tr>
+			<td>{{if eq $v2.Signed true}}<span class="badge badge-success">true</span>{{else}}<span class="badge badge-danger">false</span>{{end}}</td>
+			<td>
+        {{if ne $v2.Name ""}}
+          <a href="/node/{{$v2.PubKey}}"><img src="{{$v2.Logo}}" alt="{{$v2.PubKey}}" width="24px"> {{$v2.Name}}</a>
+        {{else}}
+          <a href="/node/{{$v2.PubKey}}">{{$v2.PubKey}}<a/>
+        {{end}}
+      </td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+		</table>
+		</div>
+		{{end}}
+		
+		{{if gt (len $.OneBlocks.Events) 0}}
+		<div class="tab-pane fade show" id="events{{$.OneBlocks.Height}}" role="tabpanel" aria-labelledby="events-tab{{$.OneBlocks.Height}}">
+		<h5>Events</h5>	
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">Role</th>
+      		<th scope="col">Address</th>
+			<th scope="col">Amount</th>
+			<th scope="col">Public Key</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i3, $v3 := $.OneBlocks.Events}}
+    	  <tr>
+			<th scope="row">{{$v3.Role}}</th>
+			<td><a href="/address/{{$v3.Address}}">{{$v3.AddressMin}}<a/></td>
+			<td>{{$v3.Amount}} {{$v3.Coin}}</td>
+			<td><a href="/node/{{$v3.ValidatorPubKey}}">{{$v3.ValidatorPubKeyMin}}<a/></td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+		</table>
+		</div>
+		{{end}}
+		
+		</div>  
+	
+{{template "_footer" .}}

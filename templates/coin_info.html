@@ -1,0 +1,264 @@
+{{template "_header" .}}
+	
+	<script src="http://d3js.org/d3.v4.min.js"></script>
+	<script src="http://techanjs.org/techan.min.js"></script>
+	
+{{if eq $.MyCoin true}}
+<div class="modal fade" id="exampleModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalEditTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalEditTitle">Edit: {{.Ticker1}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	  <form method="post">
+  		<input type="hidden" name="typeAct" value="EDIT">
+		<input type="hidden" name="coin" value="{{.Ticker1}}">
+
+		<div class="modal-body">
+		  <div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputWWW">WWW</label>
+				<input type="text" class="form-control" name="inputWWW" value="{{$.CoinInf.CoinURL}}">
+			</div>
+		  </div>
+		  <div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputDescription">Description</label>
+				<input type="text" class="form-control" name="inputDescription" value="{{$.CoinInf.CoinDesc}}">
+			</div>
+		  </div>
+		  <div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputIcon">Icon</label>
+				<input type="text" class="form-control" name="inputIcon" value="{{$.CoinInf.CoinLogoImg}}">
+			</div>
+		  </div>
+
+		</div>
+		<div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  <button type="submit" class="btn btn-primary">Save</button>
+      	</div>
+	  </form>
+    </div>
+  </div>
+</div>
+{{end}}
+
+	
+	{{if .AlertMsg}}
+	<div class="alert alert-{{.AlertType}} alert-dismissible fade show" role="alert">
+		<strong>{{.AlertAct}}</strong> {{if eq .AlertType "success"}} <a href="/transaction/{{.AlertMsg}}" target="_blank">{{.AlertMsg}}</a> {{else}} {{.AlertMsg}} {{end}}
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	</div>
+	{{end}}
+	
+	<div class="row">
+    <div class="col col-xl-7 col-lg-7 col-md-12 col-sm-12">
+      <div class="jumbotron">
+	
+        <h1>
+		{{if ne $.CoinInf.CoinLogoImg ""}}
+		<img src="{{$.CoinInf.CoinLogoImg}}" alt="Coin logotype" width="36" height="36" style="border-radius: 20px;">
+		{{else}}
+		<img src="/img/minter-logo-circle.svg" alt="Coin logotype" width="36" height="36">
+		{{end}}
+		{{if ne $.CoinInf.CoinURL ""}}
+		 <a href="{{$.CoinInf.CoinURL}}">{{.TitleCoin}}</a>
+		{{else}}
+		 {{.TitleCoin}}
+		{{end}}
+		 <small class="text-muted" style="font-size:50%;">({{.Ticker1}}/{{.Ticker2}})</small>
+		{{if eq $.MyCoin true}}
+		<button class="btn btn-outline-success btn-minter my-2 my-sm-0" style="border-color: transparent;" type="button" data-toggle="modal" data-target="#exampleModalEdit" title="Edit"><i class="fas fa-pencil-alt"></i></button>
+		{{end}}
+		</h1>
+		
+<div class="form-row justify-content-around">
+	<div class="form-group">
+		<form action="/coin/{{.Ticker1}}/{{.Ticker2}}" method="post">
+			<input type="hidden" name="typeAct" value="BUY">
+  			<div class="form-row justify-content-around">
+			
+    			<div class="form-group" style="border: solid #6c757d;border-radius: .5rem;padding: 10px;">
+					<!-- Купить --><h3>Buy</h3>
+					<!-- Цена --><label for="inputBuy1">Price: <b>{{.PriceNowBuy}}</b><small>{{.Ticker2}}</small></label>
+					<div class="form-group">
+					<!-- Кол. монет --><small id="buyHelpBlock1" class="form-text text-muted">Amount {{.Ticker1}}</small>
+				    <!-- Кол. монет --><input type="text" pattern="\d+(\.\d{1,8})?" class="form-control" id="inputBuy1" name="inputBuy1" placeholder="Amount {{.Ticker1}}">
+					</div>
+					<div class="form-group">
+					<!-- Сумма --><small id="buyHelpBlock2" class="form-text text-muted">Total {{.Ticker2}}</small>
+					<!-- Сумма --><input type="text" pattern="\d+(\.\d{1,8})?" class="form-control" id="inputBuy2" name="inputBuy2" placeholder="Total {{.Ticker2}}">
+					</div>
+			
+					<button type="submit" class="btn btn-primary" {{if .UsrAuth}}{{else}}disabled{{end}}>Buy</button>
+    			</div>
+			</div>
+		</form>
+	</div>
+	<div class="form-group">
+		<form action="/coin/{{.Ticker1}}/{{.Ticker2}}" method="post">
+			<input type="hidden" name="typeAct" value="SELL">
+			    <div class="form-group" style="border: solid #6c757d;border-radius: .5rem;padding: 10px;">
+					<!-- Продать --><h3>Sell</h3>
+					<!-- Цена --><label for="inputSell1">Price: <b>{{.PriceNowSell}}</b><small>{{.Ticker2}}</small></label>
+					<div class="form-group">
+					<!-- Кол. монет --><small id="sellHelpBlock1" class="form-text text-muted">Amount {{.Ticker1}}</small>
+					<!-- Кол. монет --><input type="text" pattern="\d+(\.\d{1,8})?" class="form-control" id="inputSell1" name="inputSell1" placeholder="Amount {{.Ticker1}}">
+					</div>
+					<div class="form-group">
+					<!-- Сумма --><small id="sellHelpBlock2" class="form-text text-muted">Total {{.Ticker2}}</small>
+					<!-- Сумма --><input type="text" pattern="\d+(\.\d{1,8})?" class="form-control" id="inputSell2" name="inputSell2" placeholder="Total {{.Ticker2}}">
+					</div>
+					
+					<button type="submit" class="btn btn-primary" {{if .UsrAuth}}{{else}}disabled{{end}}>Sell</button>
+    			</div>
+  		</form>
+	</div>
+</div>
+		
+		
+		
+		
+      </div>
+    </div>
+    <div class="col col-xl-5 col-lg-5 col-md-12 col-sm-12">
+		<div class="row justify-content-end">	
+			<p class="lead"><span class="badge badge-info"><small>Update: {{.UpdateData}}</small></span></p>
+		</div>
+    	<!-- Дата создания --><p class="lead">Date of creation: {{.Time}}</p>
+		<!-- Создатель --><p class="lead">Creator: <a href="/address/{{.Creator}}">{{.CreatorTXT}}</a></p>
+		<p class="lead">CRR: {{.CRR_prc}}%</p>
+		<!-- Начальное кол. --><p class="lead">Initial amount: {{.InitialAmount}}</p>
+		<!-- Начальный резерв --><p class="lead">Initial reserve: {{.InitialReserve}}</p>
+		<!-- Объем --><p class="lead">Volume: {{printf "%.2f" .Volume}}</p>
+		<!-- Резерв --><p class="lead">Reserve balance: {{.ReserveBalance}}</p>
+		<!-- Изменение (за 24ч) --><p class="lead">Change (24h): {{.Change24}}%</p>
+		<!-- Объем (за 24ч) --><p class="lead">Volume (24h): {{.Volume24}}</p>
+		{{if ne $.CoinInf.CoinDesc ""}}
+		<!-- Описание --><p class="lead">Description: {{$.CoinInf.CoinDesc}}</p>
+		{{end}}
+	  
+    </div>
+  </div>
+      
+	
+	  <!-- Graphs -->
+	  <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script>
+
+      var ctx = document.getElementById("myChart").getContext("2d");
+      var myChart = new Chart(ctx, {
+		type: 'bar',
+  		data: {
+    		datasets: [{
+          		label: 'Volume coin',
+          		data: [{{range $i, $v := .Transactions}}{{$v.Volume}},{{end}}],
+				yAxisID: 'y-axis-1',
+				fill: false,
+        	}, {
+		        label: 'Price coin ({{.Ticker2}})',
+	            data: [{{range $i, $v := .Transactions}}{{$v.Open}},{{end}}],
+				yAxisID: 'y-axis-2',
+				fill: false,
+
+          		// Changes this dataset to become a line
+          		type: 'line',
+				//lineTension: 0,
+            	backgroundColor: 'transparent',
+            	borderColor: '#007bff',
+            	//borderWidth: 4,
+            	pointBackgroundColor: '#007bff'
+        	}],
+	    	labels: [{{range $i, $v := .Transactions}}"{{$v.Date}}",{{end}}]
+  		},
+
+        options: {
+          scales: {
+            yAxes: [{
+							type: 'linear',
+							display: true,
+							scaleLabel: {
+								display: true,
+								labelString: 'Price (MNT)'
+							},
+							position: 'left',
+							id: 'y-axis-2',
+						}, {
+							type: 'linear',
+							display: true,
+							scaleLabel: {
+								display: true,
+								labelString: 'Volume'
+							},
+							position: 'right',
+							id: 'y-axis-1',
+
+							// grid line settings
+							gridLines: {
+								drawOnChartArea: false, // only want the grid lines for one axis to show up
+							},
+						}],
+          },
+          legend: {
+            display: true,
+          }
+        }
+      });
+    </script>
+	
+	<script>
+	
+	$("#btnGenerateSeed").on('click',function(){
+		$(this).hide();
+		$.getJSON('/api/v1/newMnemonic', function(data) {
+			$("#exampleInputSeed").val(data.mnemonic);
+			$("#areaSeedDataTxt").html(data.mnemonic);
+			$("#areaSeedDataBtn").attr("data-clipboard-text",data.mnemonic);
+			$("#areaSeedData").show();
+		});
+	});
+	new ClipboardJS('.btn');
+	
+	
+	$("#inputBuy1").keyup(function() {
+	 	if($.isNumeric($(this).val())) {
+			$("#inputBuy2").val($(this).val()*parseFloat({{.PriceNowBuy}}))
+		} else {
+			alert("Please enter a number!")
+		}
+	});
+	$("#inputBuy2").keyup(function() {
+	 	if($.isNumeric($(this).val())) {
+			$("#inputBuy1").val($(this).val()/parseFloat({{.PriceNowBuy}}))
+		} else {
+			alert("Please enter a number!")
+		}
+	});
+	$("#inputSell1").keyup(function() {
+	 	if($.isNumeric($(this).val())) {
+			$("#inputSell2").val($(this).val()*parseFloat({{.PriceNowSell}}))
+		} else {
+			alert("Please enter a number!")
+		}
+	});
+	$("#inputSell2").keyup(function() {
+	 	if($.isNumeric($(this).val())) {
+			$("#inputSell1").val($(this).val()/parseFloat({{.PriceNowBuy}}))
+		} else {
+			alert("Please enter a number!")
+		}
+	});
+	
+	$('#exampleModalCenter').on('shown.bs.modal', function () {
+		//$('#myInput').trigger('focus')
+	})
+	</script>
+
+
+{{template "_footer" .}}

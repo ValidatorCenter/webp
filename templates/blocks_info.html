@@ -1,0 +1,286 @@
+{{template "_header" .}}
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="xModalBlock" tabindex="-1" role="dialog" aria-labelledby="xModalBlock" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-title">Block #...</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>	
+	  <div class="modal-body">
+	<div class="container-fluid">
+    <div class="row">
+    
+    <!-- Содержимое блока -->
+    
+    <div id="modal-loader" class="cssload-loader">
+	    <div class="cssload-inner cssload-one"></div>
+	    <div class="cssload-inner cssload-two"></div>
+	    <div class="cssload-inner cssload-three"></div>
+    </div>
+    
+    <table id="modal-general-info" class="table table-hover table-striped table-striped table-bordered" style="display:none">
+  		<tbody>
+		  <tr>
+			<th scope="row">Height</th>
+			<td id="modal-general-info-height_html"><a href="/block/$v.Height">$v.Height<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">TimeStamp</th>
+      		<td id="modal-general-info-time">$v.Time</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Hash</th>
+      		<td id="modal-general-info-hash_mh">Mh$v.Hash</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Size</th>
+      		<td id="modal-general-info-size">$v.Size bytes</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Reward</th>
+      		<td id="modal-general-info-reward">$v.BlockReward $v.CoinMinter</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">#Transactions</th>
+      		<td id="modal-general-info-trx_amnt">$v.TransactionsAmnt</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">#Validators</th>
+      		<td id="modal-general-info-valid_amnt">$v.PrecommitsAmnt</td>
+    	  </tr>
+		  <tr>
+      <th scope="row">#Events</th>
+      		<td id="modal-general-info-evnt_amnt">$v.EventsAmnt</td>
+    	  </tr>
+		  <tr>      
+			<th scope="row">Proposer</th>
+      		<td id="modal-general-info-propos_html">
+            <a href="/node/$v.Proposer">$v.Proposer</a>
+          </td>
+    	  </tr>
+  		</tbody>
+		</table>
+    
+    <ul class="nav nav-tabs" id="modal-tab-nav" role="tablist" style="width: 100%;">
+			<li id="modal-tab-nav-transactions" class="nav-item" style="display:none">
+    		<a class="nav-link" id="modal-tab-transactions" data-toggle="tab" href="#tab-trx" role="tab" aria-controls="tab-trx" aria-selected="true">Transactions</a>
+  		</li>
+			<li id="modal-tab-nav-validators" class="nav-item" style="display:none">
+    		<a class="nav-link" id="modal-tab-precommits" data-toggle="tab" href="#tab-valid" role="tab" aria-controls="tab-valid" aria-selected="false">Validators</a>
+  		</li>
+  		<li id="modal-tab-nav-events" class="nav-item" style="display:none">
+    		<a class="nav-link" id="modal-tab-events" data-toggle="tab" href="#tab-evnt" role="tab" aria-controls="tab-evnt" aria-selected="false">Events</a>
+  		</li>
+		</ul>
+    
+    <div class="tab-content" id="modal-tab-Content">
+      <div class="tab-pane fade show" id="tab-trx" role="tabpanel" aria-labelledby="tab-trx">
+        <h5>Transactions</h5>	
+        <table class="table table-hover table-striped table-striped table-bordered">
+  		    <thead>
+		        <tr>
+      		    <th scope="col">TxHash</th>
+      		    <th scope="col">Block</th>
+        			<th scope="col">Age</th> <!--привязана к блоку-->
+			        <th scope="col">From</th>
+			        <th scope="col">Type</th>
+			        <th scope="col">Amount</th>
+    	      </tr>
+  		    </thead>
+  		    <tbody id="tab-trx-body">
+            <!-- TRX -->
+          </tbody>
+		    </table>
+      </div>
+      
+      <div class="tab-pane fade show" id="tab-valid" role="tabpanel" aria-labelledby="tab-valid">
+        <h5>Validators</h5>
+        <table class="table table-hover table-striped table-striped table-bordered">
+  		    <thead>
+		        <tr>
+        		  <th scope="col">Signed</th>
+      		    <th scope="col">Public Key</th>
+    	      </tr>
+  		    </thead>
+  		    <tbody id="tab-valid-body">
+            <!-- VLD -->
+          </tbody>
+		    </table>
+      </div>
+      
+      <div class="tab-pane fade show" id="tab-evnt" role="tabpanel" aria-labelledby="tab-evnt">
+        <h5>Events</h5>	
+        <table class="table table-hover table-striped table-striped table-bordered">
+  		    <thead>
+		        <tr>
+      		    <th scope="col">Role</th>
+      		    <th scope="col">Address</th>
+			        <th scope="col">Amount</th>
+			        <th scope="col">Public Key</th>
+    	      </tr>
+  		    </thead>
+      		<tbody id="tab-evnt-body">
+            <!-- EVN -->
+          </tbody>
+		    </table>
+      </div>
+      
+    </div>		
+    	
+    </div>
+	</div>
+	  </div>
+    </div>
+  </div>
+</div>
+
+	
+		<div class="container" style="padding-bottom: 10px;">
+  			<div class="row">
+    			<div class="col-sm">
+      				<h5>Blocks (#{{$.MinBlock}} to #{{$.MaxBlock}}) out of {{$.TotalBlock}} total blocks</h5>
+    			</div>
+    			<div class="ml-3">
+      				<div class="btn-group mr-2" role="group">
+					{{if gt $.BtnLL 0}}
+    					<a href="/blocks/{{$.BtnLL}}" class="btn btn-secondary"><<</a>
+	    				<a href="/blocks/{{$.BtnL}}" class="btn btn-secondary"><</a>
+					{{end}}
+					{{if gt $.BtnRR 0}}
+    					<a href="/blocks/{{$.BtnR}}" class="btn btn-secondary">></a>
+    					<a href="/blocks/{{$.BtnRR}}" class="btn btn-secondary">>></a>
+					{{end}}
+  	  				</div>
+    			</div>
+  			</div>
+		</div>
+				
+		
+	  <table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>		
+      		<th scope="col">Height</th>
+      		<th scope="col">Age</th>
+      		<th scope="col">Validators</th>
+			<th scope="col">Txns</th>
+      		<th scope="col">Block size</th>
+			<th scope="col">Reward</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i, $v := .AllBlocks}}
+    	  <tr onclick="viewWin({{$v.Height}});" style="cursor: pointer;">
+			<th scope="row">{{$v.Height}}</th>
+      		<td>{{$v.Age}}</td>
+	        <td>{{$v.PrecommitsAmnt}}</td>
+			<td>{{$v.NumTxs}}</td>
+      		<td>{{$v.Size}} bytes</td>
+			<td>{{$v.BlockReward}} {{$.CoinMinter}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+	  </table>
+    
+    <script>
+    
+    function viewWin(blockID) {
+      console.log("block #"+blockID);
+      $('#xModalBlock .modal-title').html("Block #"+blockID);
+      $('#xModalBlock').modal('show');
+      
+      $.getJSON('/api/v1/block/'+blockID, function(data) {
+        console.log(data);
+        // Проверяем, что корректные данные получили
+        if(!data.status){
+          alert(data.err_msg);
+          $('#xModalBlock').modal('hide');
+        } else {
+          // TODO: Засовываем полученные значения в форму
+          _CoinMinter="MNT";
+          
+          //Очищаем от старых данных:
+          $("#tab-trx-body").html("");
+          $("#tab-valid-body").html("");
+          $("#tab-evnt-body").html("");
+          $("#modal-tab-nav-transactions").hide();
+          $("#modal-tab-nav-validators").hide();
+          $("#modal-tab-nav-events").hide();
+          
+          if(data.block.transactions_amnt_i32>0) {
+            for (var i = 0; i < data.block.transactions.length; i++) {
+              $("#tab-trx-body").append("<tr>"+
+                "<td><a href='/transaction/"+data.block.transactions[i].hash+"'>"+data.block.transactions[i].hash_min+"<a/></td>"+
+                "<td>"+data.block.height_i32+"</td>"+
+                "<td>"+data.block.time+"</td>"+
+                "<td><a href='/address/"+data.block.transactions[i].from+"'>"+data.block.transactions[i].from_min+"<a/></td>"+
+                "<td>"+data.block.transactions[i].type_txt+"</td>"+
+                "<td>"+data.block.transactions[i].amount_f32+"</td>"+
+              "</tr>");
+            }
+            $("#modal-tab-nav-transactions").show();
+          }          
+          if(data.block.validators_amnt_i32>0) {
+            for(var i = 0; i < data.block.validators.length; i++) {
+              validStatus="";
+              if(data.block.validators[i].signed) {
+                validStatus="<span class='badge badge-success'>true</span>";
+              } else {
+                validStatus="<span class='badge badge-danger'>false</span>";
+              }
+              
+              url4valid=""
+              if(data.block.validators[i].name!="") {
+                url4valid='<img src="'+data.block.validators[i].logo+'" width="24px"> '+data.block.validators[i].name;
+              } else {
+                url4valid=data.block.validators[i].pub_key;
+              }
+              
+              $("#tab-valid-body").append("<tr>"+
+                "<td>"+validStatus+"</td>"+
+                "<td><a href='/node/"+data.block.validators[i].pub_key+"'>"+url4valid+"<a/></td>"+
+              "</tr>");
+            }
+            $("#modal-tab-nav-validators").show();
+          }          
+          if(data.block.events_amnt_i32>0) {
+            for(var i = 0; i < data.block.events.length; i++) {
+              $("#tab-evnt-body").append("<tr>"+
+                "<th scope='row'>"+data.block.events[i].role+"</th>"+
+                "<td><a href='/address/"+data.block.events[i].address+"'>"+data.block.events[i].address_min+"<a/></td>"+
+      			    "<td>"+data.block.events[i].amount_f32+" "+data.block.events[i].coin+"</td>"+
+			          "<td><a href='/node/"+data.block.events[i].validator_pub_key+"'>"+data.block.events[i].validator_pub_key_min+"<a/></td>"+
+              "</tr>");
+            }
+            $("#modal-tab-nav-events").show();
+          }
+          
+          $("#modal-general-info-height_html").html('<a href="/block/'+data.block.height_i32+'">'+data.block.height_i32+'<a/>');
+      		$("#modal-general-info-time").html(data.block.time);
+      		$("#modal-general-info-hash_mh").html("Mh"+data.block.hash);
+      		$("#modal-general-info-size").html(data.block.size_i32+" bytes");
+      		$("#modal-general-info-reward").html(data.block.block_reward_f32+" "+_CoinMinter);
+      		$("#modal-general-info-trx_amnt").html(data.block.transactions_amnt_i32);
+      		$("#modal-general-info-valid_amnt").html(data.block.validators_amnt_i32);
+          $("#modal-general-info-evnt_amnt").html(data.block.events_amnt_i32);
+          
+          url4proposer=""
+          if(data.block.proposer_name!="") {
+            url4proposer='<img src="'+data.block.proposer_logo+'" alt="'+data.block.proposer+'" width="24px"> '+data.block.proposer_name;
+          } else {
+            url4proposer=data.block.proposer;
+          }
+          $("#modal-general-info-propos_html").html('<a href="/node/'+data.block.proposer+'">'+url4proposer+'</a>');
+          
+          // Показываем контент в модальном-окне
+          $("#modal-loader").hide();
+          $("#modal-general-info").show();
+        }
+			});
+    }
+    </script>
+	
+{{template "_footer" .}}

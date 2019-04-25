@@ -1,0 +1,363 @@
+{{template "_header" .}}
+	
+	
+{{range $i, $v := .AllTrns}}
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="xModalTrans{{$v.Hash}}" tabindex="-1" role="dialog" aria-labelledby="xModalTrans{{$v.Hash}}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Transaction Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	  <div class="modal-body">
+	<div class="container-fluid">
+    <div class="row">
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<tbody>
+		  <tr>
+			<th scope="row">Status</th>
+			<td>{{$v.Status}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Hash</th>
+			<td><a href="/transaction/{{$v.Hash}}">{{$v.Hash}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Block</th>
+			<td><a href="/block/{{$v.Height}}">{{$v.Height}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Nonce</th>
+      		<td>{{$v.Nonce}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Type</th>
+      		<td>{{$v.TypeTxt}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">From</th>
+			<td><a href="/address/{{$v.From}}">{{$v.From}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Fee</th>
+			<td>{{$v.GasFee}} {{$v.GasCoin}}</td>
+    	  </tr>
+		
+		{{if eq $v.Type 1}} <!-- Send -->
+		  <tr>
+			<th scope="row">Coin</th>
+      		<td>{{$v.Data.Coin}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">To</th>
+			<td><a href="/address/{{$v.Data.To}}">{{$v.Data.To}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value</th>
+      		<td>{{$v.Data.Value}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 2}} <!-- SellCoin -->
+		  <tr>
+			<th scope="row">Coin to Sell</th>
+      		<td>{{$v.Data.CoinToSell}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin to Buy</th>
+      		<td>{{$v.Data.CoinToBuy}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value to Sell</th>
+      		<td>{{$v.Data.ValueToSell}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Return</th>
+      		<td>{{$v.TxReturn}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 3}} <!-- SellAllCoin -->
+		  <tr>
+			<th scope="row">Coin to Sell</th>
+      		<td>{{$v.Data.CoinToSell}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin to Buy</th>
+      		<td>{{$v.Data.CoinToBuy}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value to Sell</th>
+      		<td>{{$v.TxSellAmount}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Return</th>
+      		<td>{{$v.TxReturn}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 4}} <!-- BuyCoin -->
+		  <tr>
+			<th scope="row">Coin to Buy</th>
+      		<td>{{$v.Data.CoinToBuy}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin to Sell</th>
+      		<td>{{$v.Data.CoinToSell}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value to Buy</th>
+      		<td>{{$v.Data.ValueToBuy}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Return</th>
+      		<td>{{$v.TxReturn}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 5}} <!-- CreateCoin -->
+		  <tr>
+			<th scope="row">Name</th>
+      		<td>{{$v.Data.Name}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Symbol</th>
+      		<td><a href="/coin/{{$v.Data.CoinSymbol}}">{{$v.Data.CoinSymbol}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">CRR</th>
+      		<td>{{$v.Data.ConstantReserveRatio}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Initial amount</th>
+      		<td>{{$v.Data.InitialAmount}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Initial reserve</th>
+      		<td>{{$v.Data.InitialReserve}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 6}} <!-- DeclareCandidacy -->
+		  <tr>
+			<th scope="row">Address</th>
+			<td><a href="/address/{{$v.Data.Address}}">{{$v.Data.Address}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Commission</th>
+      		<td>{{$v.Data.Commission}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin</th>
+      		<td>{{$v.Data.Coin}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Stake</th>
+      		<td>{{$v.Data.Stake}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 7}} <!-- Delegate -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin</th>
+      		<td>{{$v.Data.Coin}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Stake</th>
+      		<td>{{$v.Data.Stake}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 8}} <!-- Unbond -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Coin</th>
+      		<td>{{$v.Data.Coin}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Value</th>
+      		<td>{{$v.Data.Value}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 9}} <!-- RedeemCheck -->
+		  <tr>
+			<th scope="row">RawCheck</th>
+      		<td>{{$v.Data.RawCheck}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Proof</th>
+      		<td>{{$v.Data.Proof}}</td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 10}} <!-- SetCandidateOn -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 11}} <!-- SetCandidateOff -->
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td><a href="/node/{{$v.Data.PubKey}}">{{$v.Data.PubKey}}<a/></td>
+    	  </tr>
+		{{end}}
+		
+		{{if eq $v.Type 12}} <!-- CreateMultisig -->
+		{{end}}
+		
+		
+		{{if ne $v.Payload ""}}
+		  <tr>
+			<th scope="row">Comment</th>
+      		<td>{{$v.Payload}}</td>
+    	  </tr>
+		{{end}}
+		  
+  		</tbody>
+		</table>
+	
+	</div>
+	</div>
+	  </div>
+    </div>
+  </div>
+</div>
+{{end}}
+
+
+    
+		
+		<div class="container" style="padding-bottom: 10px;">
+  			<div class="row">
+    			<div class="col-sm">
+      				<h5>Address {{$.Address}}</h5>
+    			</div>
+    			<div class="ml-3">
+      				<div class="btn-group mr-2" role="group">
+					{{if ne $.BtnNow 0}}
+    					<a href="/address/{{$.Address}}" class="btn btn-secondary"><<</a>
+	    				<a href="/address/{{$.Address}}/{{$.BtnL}}" class="btn btn-secondary"><</a>
+					{{end}}
+					{{if gt $.BtnRR 0}}
+    					<a href="/address/{{$.Address}}/{{$.BtnR}}" class="btn btn-secondary">></a>
+    					<a href="/address/{{$.Address}}/{{$.BtnRR}}" class="btn btn-secondary">>></a>
+					{{end}}
+  	  				</div>
+    			</div>
+  			</div>
+		</div>
+		
+		<div class="container">
+  		<div class="row">
+		{{if gt (len $.AllCoins) 0}}
+		<h6>Coins</h6>
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>		
+      		<th scope="col">Coin</th>
+			<th scope="col">Amount</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i, $v := .AllCoins}}
+    	  <tr>
+			<td><a href="/coin/{{$i}}">{{$i}}</a></td>
+			<td>{{$v}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+	    </table>
+		{{end}}
+		
+		{{if gt (len $.AllDeleg) 0}}
+		<div class="col-sm"><h6>Delegate</h6></div><a href="/tasklist/{{$.Address}}">Return of commission for addresses</a>
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>		
+      		<th scope="col">Validator</th>
+			<th scope="col">Value</th>
+			<th scope="col">In base coin</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i, $v := .AllDeleg}}
+    	  <tr>
+			<td><a href="/node/{{$v.Validator}}">{{$v.ValidatorMin}}</a></td>
+			<td>{{$v.Value}} {{$v.Coin}}</td>
+			<td>{{$v.ValueBip}}</td>
+    	  </tr>		
+		{{end}}
+		<tr><td/><td/><td><b>{{$.TotalDelegate}}</b></td>
+		</tr>
+  		</tbody>
+	    </table>
+		{{end}}
+		
+		{{if gt (len $.AllReward) 0}}
+		<h6>Reward</h6>
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">Type</th>
+			<th scope="col">Validator</th>
+			<th scope="col">Amount</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i3, $v3 := $.AllReward}}
+    	  <tr>
+			<td>{{$v3.Role}}</td>
+			<td><a href="/node/{{$v3.PubKey}}">{{$v3.PubKey}}<a/></td>
+			<td>{{$v3.Amnt}}</td>
+    	  </tr>		
+		{{end}}
+		<tr><td/><td/><td><b>{{$.TotalReward}}</b></td>
+  		</tbody>
+		</table>
+		{{end}}
+		
+		<h6>Transactions</h6>		
+	  <table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>		
+      		<th scope="col">TxHash</th>
+      		<th scope="col">Block</th>
+      		<th scope="col">From</th>
+			<th scope="col">Type</th>
+			<th scope="col">Amount</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i, $v := .AllTrns}}
+    	  <tr onclick="$('#xModalTrans{{$v.Hash}}').modal('show');" style="cursor: pointer;">
+			<td>{{$v.HashMin}}</td>
+      		<td><a href="/block/{{$v.Height}}">{{$v.Height}}<a/></td>
+	        <td><a href="/address/{{$v.From}}">{{$v.FromMin}}<a/></td>
+			<td>{{$v.TypeTxt}}</td>
+			<td>{{$v.Amount}} {{$.CoinMinter}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+	  </table>
+	
+		</div>
+		</div>
+	
+{{template "_footer" .}}

@@ -1,0 +1,307 @@
+{{template "_header" .}}
+
+<!-- Modal -->
+{{if eq $.MyNode true}}
+<div class="modal fade" id="exampleModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalEditTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalEditTitle">Edit: {{$.OneNode.PubKeyMin}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	  <form method="post">
+  		<input type="hidden" name="typeAct" value="EDIT">
+		<input type="hidden" name="pubKey" value="{{$.OneNode.PubKey}}">
+
+		<div class="modal-body">
+		  <div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputTitle">Title</label>
+				<input type="text" class="form-control" name="inputTitle" value="{{$.OneNode.ValidatorName}}">
+			</div>
+		  </div>
+		  <div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputWWW">WWW</label>
+				<input type="text" class="form-control" name="inputWWW" value="{{$.OneNode.ValidatorURL}}">
+			</div>
+		  </div>
+		  <div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputDescription">Description</label>
+				<input type="text" class="form-control" name="inputDescription" value="{{$.OneNode.ValidatorDesc}}">
+			</div>
+		  </div>
+		  <div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="inputIcon">Icon</label>
+				<input type="text" class="form-control" name="inputIcon" value="{{$.OneNode.ValidatorLogoImg}}">
+			</div>
+		  </div>
+
+		</div>
+		<div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  <button type="submit" class="btn btn-primary">Save</button>
+      	</div>
+	  </form>
+    </div>
+  </div>
+</div>
+{{end}}
+
+<!--MODAL WINDOWS (!!!)-->
+		
+		<div class="container">
+  			<div class="row">
+    			<div class="col-sm">
+					<h5><a href="/nodes" class="btn btn-outline-success btn-minter my-2 my-sm-0" type="button" style="border-radius: 20px;">←</a>
+					{{if ne $.OneNode.ValidatorLogoImg ""}}
+					<img src="{{$.OneNode.ValidatorLogoImg}}" alt="" style="width: 32px;height: 32px;position: relative;top: 2px;"> {{$.OneNode.ValidatorName}}
+					{{else}}
+					 Node #{{$.OneNode.PubKeyMin}}
+					{{end}}
+					{{if eq $.MyNode true}}
+						<button class="btn btn-outline-success btn-minter my-2 my-sm-0" style="border-color: transparent;" type="button" data-toggle="modal" data-target="#exampleModalEdit" title="Edit"><i class="fas fa-pencil-alt"></i></button>
+					{{end}}
+					</h5>
+    			</div>
+  			</div>
+		</div>
+		
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<tbody>
+		  {{if ne $.OneNode.ValidatorURL ""}}
+		  <tr>
+			<th scope="row">WWW</th>
+      		<td><a href="{{$.OneNode.ValidatorURL}}">{{$.OneNode.ValidatorURL}}</a></td>
+    	  </tr>
+		  {{end}}
+		  {{if ne $.OneNode.ValidatorDesc ""}}
+		  <tr>
+			<th scope="row">Description</th>
+      		<td>{{$.OneNode.ValidatorDesc}}</td>
+    	  </tr>
+		  {{end}}
+		  <tr>
+			<th scope="row">PubKey</th>
+      		<td>{{$.OneNode.PubKey}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Uptime</th>
+      		<td>{{$.OneNode.Uptime}}%</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Created at Blocks</th>
+			<td><a href="/block/{{$.OneNode.CreatedAtBlock}}">{{$.OneNode.CreatedAtBlock}}<a/> ({{$.OneNode.Created}})</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Address</th>
+      		<td><a href="/address/{{$.OneNode.OwnerAddress}}">{{$.OneNode.OwnerAddress}}<a/></td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Commission</th>
+			
+        <td>
+        
+        {{if eq $.OneNode.Commission $.OneNode.CommissionNow}}
+				  {{if eq $.MyCommission 100}}
+            {{$.OneNode.Commission}}%
+			    {{else}}
+				    <strike>{{$.OneNode.Commission}}%</strike> <b>{{$.MyCommission}}%</b>
+			    {{end}}
+			  {{else}}
+          {{if eq $.MyCommission 100}}
+				    <strike>{{$.OneNode.Commission}}%</strike> <b>{{$.OneNode.CommissionNow}}%</b>
+          {{else}}
+				    <strike>{{$.OneNode.Commission}}%</strike> <strike>{{$.OneNode.CommissionNow}}%</strike> <b>{{$.MyCommission}}%</b>
+			    {{end}}
+			  {{end}}
+        
+        </td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Status</th>
+          <td>
+            {{if eq $.OneNode.StatusInt 77}}
+            <span class="badge badge-success">Validator</span>
+            {{else}}
+            {{if eq $.OneNode.StatusInt 2}}
+            <span class="badge badge-warning">Сhallenger</span>
+            {{else}}
+            <span class="badge badge-danger">Candidate</span>
+            {{end}}
+            {{end}}
+          </td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Stake</th>
+      		<td>{{$.OneNode.TotalStake}} {{$.CoinMinter}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">#Slots</th>
+      		<td>{{(len $.OneNode.Stakes)}}/1000</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Amount of signed blocks</th>
+      		<td>{{$.OneNode.AmntBlocks}}</td>
+    	  </tr>
+		  <tr>
+			<th scope="row">Amount Slashed</th>
+      		<td>{{$.OneNode.AmntSlashed}}</td>
+    	  </tr>
+  		</tbody>
+		</table>		
+		
+		<ul class="nav nav-tabs" id="myTab{{$.OneNode.PubKey}}" role="tablist" style="width: 100%;">
+		   {{if eq $.MyNode true}}
+  			<li class="nav-item">
+    			<a class="nav-link" id="listaddressx-tab{{$.OneNode.PubKey}}" data-toggle="tab" href="#listaddressx{{$.OneNode.PubKey}}" role="tab" aria-controls="listaddressx{{$.OneNode.PubKey}}" aria-selected="true">List address X</a>
+  			</li>
+			{{end}}
+		
+			{{if gt (len $.OneNode.Stakes) 0}}
+  			<li class="nav-item">
+    			<a class="nav-link" id="stakes-tab{{$.OneNode.PubKey}}" data-toggle="tab" href="#stakes{{$.OneNode.PubKey}}" role="tab" aria-controls="stakes{{$.OneNode.PubKey}}" aria-selected="true">Stakes</a>
+  			</li>
+			{{end}}
+			
+			{{if gt (len $.OneNode.Blocks) 0}}
+  			<li class="nav-item">
+    			<a class="nav-link" id="noblocks-tab{{$.OneNode.PubKey}}" data-toggle="tab" href="#noblocks{{$.OneNode.PubKey}}" role="tab" aria-controls="noblocks{{$.OneNode.PubKey}}" aria-selected="false">Blocks</a>
+  			</li>
+			{{end}}
+			
+			{{if gt (len $.AllReward) 0}}
+  			<li class="nav-item">
+    			<a class="nav-link" id="rewards-tab{{$.OneNode.PubKey}}" data-toggle="tab" href="#rewards{{$.OneNode.PubKey}}" role="tab" aria-controls="rewards{{$.OneNode.PubKey}}" aria-selected="false">Rewards</a>
+  			</li>
+			{{end}}
+		</ul>
+		
+		<div class="tab-content" id="myTabContent{{$.OneNode.PubKey}}">
+		
+		{{if eq $.MyNode true}}
+		<div class="tab-pane fade show" id="listaddressx{{$.OneNode.PubKey}}" role="tabpanel" aria-labelledby="listaddressx-tab{{$.OneNode.PubKey}}">
+		<h5>List address X</h5>	
+		<form method="post">
+  			<input type="hidden" name="typeAct" value="ADD"> <!-- и DEL, из списка-->
+			<input type="hidden" name="pubKey" value="{{$.OneNode.PubKey}}">
+			<div class="row">
+    			<div class="col">
+      				<input type="text" class="form-control" placeholder="Address" name="addressX">
+    			</div>
+    			<div class="col">
+      				<input type="number" class="form-control" placeholder="Commission" name="commission">
+    			</div>
+				<div class="col">
+      				<input type="date" class="form-control" placeholder="Start" name="start">
+    			</div>
+				<div class="col">
+      				<input type="date" class="form-control" placeholder="Finish" name="finish">
+    			</div>
+				<div class="col">
+      				 <button type="submit" class="btn btn-primary">+</button>
+    			</div>
+  			</div>
+		</form>
+		<br>
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">Address</th>
+			<th scope="col">Commission</th>
+      		<th scope="col">Start</th>
+			<th scope="col">Finish</th>
+			<th scope="col"></th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $iX, $vX := $.ListAddressX}}
+    	  <tr>
+			<td><a href="/address/{{$vX.Address}}">{{$vX.Address}}<a/></td>
+      		<td>{{$vX.Commission}}%</td>
+			<td>{{$vX.Start}}</td>
+			<td>{{$vX.Finish}}</td>
+			<td><button title="Удалить">X</button></td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+		</table>
+		</div>
+		{{end}}
+		
+		{{if gt (len $.OneNode.Stakes) 0}}
+		<div class="tab-pane fade show" id="stakes{{$.OneNode.PubKey}}" role="tabpanel" aria-labelledby="stakes-tab{{$.OneNode.PubKey}}">
+		<h5>Stakes</h5>	
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">Owner</th>
+      		<th scope="col">Value</th>
+			<th scope="col">In base coin</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i1, $v1 := $.OneNode.Stakes}}
+    	  <tr>
+			<td><a href="/address/{{$v1.Owner}}">{{$v1.Owner}}<a/></td>
+      		<td>{{$v1.Value}} {{$v1.Coin}}</td>
+			<td>{{$v1.BipValue}} {{$.CoinMinter}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+		</table>
+		</div>
+		{{end}}
+		
+		{{if gt (len $.OneNode.Blocks) 0}}
+		<div class="tab-pane fade show" id="noblocks{{$.OneNode.PubKey}}" role="tabpanel" aria-labelledby="noblocks-tab{{$.OneNode.PubKey}}">
+		<h5>Blocks</h5>
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">Block</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i2, $v2 := $.OneNode.Blocks}}
+    	  <tr>
+			<td><a href="/block/{{$v2.ID}}"><b>{{$v2.Type}}</b> - {{$v2.ID}}<a/></td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+		</table>
+		</div>
+		{{end}}
+		
+		{{if gt (len $.AllReward) 0}}
+		<div class="tab-pane fade show" id="rewards{{$.OneNode.PubKey}}" role="tabpanel" aria-labelledby="rewards-tab{{$.OneNode.PubKey}}">
+		<h5>Reward</h5>
+		<table class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">Type</th>
+			<th scope="col">Address</th>
+			<th scope="col">Amount</th>
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i3, $v3 := $.AllReward}}
+    	  <tr>
+			<td>{{$v3.Role}}</td>
+			<td><a href="/address/{{$v3.Address}}">{{$v3.Address}}<a/></td>
+			<td>{{$v3.Amnt}}</td>
+    	  </tr>		
+		{{end}}
+  		</tbody>
+		</table>
+		</div>
+		{{end}}
+		
+		</div>
+		
+
+{{template "_footer" .}}

@@ -1,0 +1,34 @@
+{{template "_header" .}}
+	
+	  <table id="example" class="table table-hover table-striped table-striped table-bordered">
+  		<thead>
+		  <tr>
+      		<th scope="col">#</th>
+      		<th scope="col">Name</th> <!-- Наименование -->
+      		<th scope="col">Price(MNT)</th> <!-- Цена(MNT) -->
+			<th scope="col">Price($)</th> <!-- Цена(USD) -->
+      		<th scope="col">Volume (24h)</th> <!-- Объем (за 24ч) -->
+			<th scope="col">Change (24h)</th> <!-- Изменение (за 24ч) -->
+    	  </tr>
+  		</thead>
+  		<tbody>
+		 {{range $i, $v := .AllCoins}}
+    	  <tr>
+      		<th scope="row">{{$v.ID}}</th>
+      		<td><a href="/coin/{{$v.Ticker}}">
+			{{if ne $v.CoinLogoImg ""}}
+				<img src="{{$v.CoinLogoImg}}" alt="Coin logotype" width="16" height="16" style="border-radius: 20px;">
+			{{else}}
+			<img src="/img/minter-logo-circle.svg" alt="Coin logotype" width="16" height="16">
+			{{end}}
+			 <b>{{$v.Name}}</b> ({{$v.Ticker}})</a></td>
+	        <td>{{$v.PriceBuy}}</td>
+			<td>{{$v.PriceBuyUSD}}</td>
+      		<td>{{$v.Volume24}}</td>
+			<td>{{if gt $v.Change24f32 0.0}}<p class="text-success">{{else}}{{if lt $v.Change24f32 0.0}}<p class="text-danger">{{else}}<p>{{end}}{{end}}{{$v.Change24}}%</p></td>
+    	  </tr>
+		{{end}}
+  		</tbody>
+	  </table>
+
+{{template "_footer" .}}	
