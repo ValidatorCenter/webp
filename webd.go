@@ -178,7 +178,7 @@ func main() {
 	// API v1
 	m.Get("/api/v1/newMnemonic", hndAPINewMnemonic)                              // новая seed-фраза, регистрация нового аккаунта в сети Minter
 	m.Get("/api/v1/autoDeleg/:number", hndAPIAutoDelegAddress)                   // получить JSON конфигурацию автоделегирования
-	m.Get("/api/v1/autoTaskOut/:tokenauth/:pubkey", hndAPIAutoTodo)              // получить JSON задачи на исполнение (max=100 за раз)
+	m.Get("/api/v1/autoTaskOut/:tokenauth/:pubkey", hndAPIAutoTodo)              // получить JSON задачи на исполнение
 	m.Get("/api/v1/autoTaskIn/:tokenauth/:returndataJSON", hndAPIAutoTodoReturn) // результат выполнения автоделегатор
 
 	// о сессиях тут -> https://go-macaron.com/docs/middlewares/session
@@ -230,10 +230,15 @@ func main() {
 	m.Get("/tasklist", hndWalletListTask)                     // Страница листа задач
 	m.Get("/tasklist/:number", hndWalletListTaskAddrs)        // Страница листа задач по адресу
 
-	//TODO: Выполнение транзакции SEND, DELEG, DECLARE/START/STOP-NODE, COINER, CREATE/ACT-CHECK по API в виде JSON с ответом результата trx+ok/err
+	//TODO: Выполнение транзакции отправки монет SEND по API в виде JSON [замена POST для эндпоинта /sendcoin] с ответом результата trx+ok/err
+	//TODO: Выполнение транзакции делегирование монет DELEG по API в виде JSON [замена POST для эндпоинта /delegation] с ответом результата trx+ok/err
+	//TODO: Выполнение транзакций управления мастернодой DECLARE/START/STOP-NODE по API в виде JSON [замена POST для эндпоинта /masternode] с ответом результата trx+ok/err
+	//TODO: Выполнение транзакции cоздания монеты COINER по API в виде JSON [замена POST для эндпоинта /coiner] с ответом результата trx+ok/err
+	//TODO: Выполнение транзакций управления чеками CREATE/ACT-CHECK по API в виде JSON [замена POST для эндпоинта /checks] с ответом результата trx+ok/err
 
-	//получить список задач Task по API в виде JSON [-=!РЕАЛИЗОВАНО!=-]
-	//m.Get("/api/v1/autoTaskOut/:tokenauth/:pubkey", hndAPIAutoTodo)
+	//TODO: получить список задач Task по API в виде JSON [замена эндпоинта /tasklist (частично уже реализовано, но для /tasklist/:number в /api/v1/autoTaskOut/:tokenauth/:pubkey)]
+
+	//TODO: получить баланс кошелька для авторизованного пользователя по API в виде JSON [замена эндпоинта ... во все эндпоинты данная информация поступала]
 
 	//[+] convert конвертация - Обмен на другие монеты (coins - уже есть)
 	//[?] checks чеки - Создание и обналичивание
