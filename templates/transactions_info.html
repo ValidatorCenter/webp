@@ -159,7 +159,7 @@
     	  </tr>
 		  <tr>
 			<th scope="row">Stake</th>
-      		<td>{{$v.Data.Stake}}</td>
+      		<td>{{printf "%.2f" $v.Data.Stake}}</td>
     	  </tr>
 		{{end}}
 		
@@ -174,7 +174,7 @@
     	  </tr>
 		  <tr>
 			<th scope="row">Stake</th>
-      		<td>{{$v.Data.Stake}}</td>
+      		<td>{{printf "%.2f" $v.Data.Stake}}</td>
     	  </tr>
 		{{end}}
 		
@@ -295,8 +295,8 @@
 			<td>{{$v.HashMin}}</td>
       		<td><a href="/block/{{$v.Height}}">{{$v.Height}}<a/></td>
 	        <td><a href="/address/{{$v.From}}">{{$v.FromMin}}<a/></td>
-			<td>{{$v.TypeTxt}}</td>
-			<td>{{$v.Amount}} {{$.CoinMinter}}</td>
+			    <td>{{$v.TypeTxt}}</td>
+			    <td>{{printf "%.2f" $v.Amount}} {{$.CoinMinter}}</td>
     	  </tr>		
 		{{end}}
   		</tbody>

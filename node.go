@@ -389,7 +389,7 @@ type RetJSONNode struct {
 	ErrMsg  string      `json:"err_msg"`
 }
 
-// API: один блок
+// API: один валидатор
 func hndAPIValidatorOneInfo(ctx *macaron.Context, sess session.Store) {
 	retDt := RetJSONNode{}
 
