@@ -103,6 +103,7 @@ func srchNodeBlockstory(db *sqlx.DB, pub_key string) []s.BlocksStory {
 		SELECT block_id, block_type
 		FROM node_blockstory
 		WHERE pub_key = '%s'
+		ORDER BY block_id
 	`, pub_key))
 	if err != nil {
 		log("ERR", fmt.Sprint("[node_sql.go] srchNodeBlockstory(Select) - [pub_key ", pub_key, "] ERR:", err), "")

@@ -19,8 +19,12 @@ func srchCoin(db *sqlx.DB) []s.CoinMarketCapData {
 		FROM coins
 	`)
 	if err != nil {
-		log("ERR", fmt.Sprint("[coin_sql.go] srchCoin(Select) - ERR:", err), "")
-		panic(err) //dbg
+		if err.Error() == "sql: no rows in result set" {
+			log("WRN", fmt.Sprint("[coin_sql.go] srchCoin(Select) - ERR:", err), "")
+		} else {
+			log("ERR", fmt.Sprint("[coin_sql.go] srchCoin(Select) - ERR:", err), "")
+			panic(err)
+		}
 	}
 
 	return allCoins
@@ -100,9 +104,12 @@ func srchCoinCreator(db *sqlx.DB, ticker string, address string) s.CoinMarketCap
 		WHERE symbol = '%s' AND creator = '%s'
 	`, ticker, address))
 	if err != nil {
-		log("ERR", fmt.Sprint("[coin_sql.go] srchCoinCreator(Get) - ERR:", err), "")
-		panic(err) //dbg
-		return vC
+		if err.Error() == "sql: no rows in result set" {
+			log("WRN", fmt.Sprint("[coin_sql.go] srchCoinCreator(Get) - ERR:", err), "")
+		} else {
+			log("ERR", fmt.Sprint("[coin_sql.go] srchCoinCreator(Get) - ERR:", err), "")
+			panic(err)
+		}
 	}
 	return vC
 }

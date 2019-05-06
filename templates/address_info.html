@@ -300,11 +300,11 @@
 		 {{range $i, $v := .AllDeleg}}
     	  <tr>
 			<td><a href="/node/{{$v.Validator}}">{{$v.ValidatorMin}}</a></td>
-			<td>{{$v.Value}} {{$v.Coin}}</td>
-			<td>{{$v.ValueBip}}</td>
+			<td>{{printf "%.2f" $v.Value}} {{$v.Coin}}</td>
+			<td>{{printf "%.2f" $v.ValueBip}}</td>
     	  </tr>		
 		{{end}}
-		<tr><td/><td/><td><b>{{$.TotalDelegate}}</b></td>
+		<tr><td/><td/><td><b>{{printf "%.2f" $.TotalDelegate}}</b></td>
 		</tr>
   		</tbody>
 	    </table>
@@ -351,7 +351,7 @@
       		<td><a href="/block/{{$v.Height}}">{{$v.Height}}<a/></td>
 	        <td><a href="/address/{{$v.From}}">{{$v.FromMin}}<a/></td>
 			<td>{{$v.TypeTxt}}</td>
-			<td>{{$v.Amount}} {{$.CoinMinter}}</td>
+			<td>{{printf "%.2f" $v.Amount}} {{$.CoinMinter}}</td>
     	  </tr>		
 		{{end}}
   		</tbody>

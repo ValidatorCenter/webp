@@ -178,7 +178,7 @@ func main() {
 	// API v1
 	m.Get("/api/v1/newMnemonic", hndAPINewMnemonic)                              // новая seed-фраза, регистрация нового аккаунта в сети Minter
 	m.Get("/api/v1/autoDeleg/:number", hndAPIAutoDelegAddress)                   // получить JSON конфигурацию автоделегирования
-	m.Get("/api/v1/autoTaskOut/:tokenauth/:pubkey", hndAPIAutoTodo)              // получить JSON задачи на исполнение (max=100 за раз)
+	m.Get("/api/v1/autoTaskOut/:tokenauth/:pubkey", hndAPIAutoTodo)              // получить JSON задачи на исполнение
 	m.Get("/api/v1/autoTaskIn/:tokenauth/:returndataJSON", hndAPIAutoTodoReturn) // результат выполнения автоделегатор
 
 	// о сессиях тут -> https://go-macaron.com/docs/middlewares/session
@@ -191,33 +191,35 @@ func main() {
 	m.Get("/blocks/:pgn", hndBlocksInfo)               // лист блоков
 	m.Get("/block/:number", hndBlockOneInfo)           // 1 блок
 	m.Get("/api/v1/block/:number", hndAPIBlockOneInfo) // API v1: 1 блок JSON
-	//TODO: получить лист блоков по API в виде JSON
+	//TODO: получить лист блоков по API в виде JSON [замена эндпоинта /blocks и /blocks/:pgn]
 
 	// Эксплорер::Транизакции
 	m.Get("/transactions", hndTransactionsInfo)                    // Страница транзакций
 	m.Get("/transactions/:pgn", hndTransactionsInfo)               // Страница транзакций
 	m.Get("/transaction/:number", hndTransactionOneInfo)           // 1 транзакция
 	m.Get("/api/v1/transaction/:number", hndAPITransactionOneInfo) // API v1: 1 транзакция JSON
-	//TODO: получить список транзакций по API в виде JSON
+	//TODO: получить список транзакций по API в виде JSON [замена эндпоинта /transactions и /transactions/:pgn]
 
 	// Валидаторы/Ноды
 	m.Get("/nodes", hndValidatorsInfo)                        // Страница валидаторов
 	m.Get("/nodes/:pgn", hndValidatorsInfo)                   // Страница валидаторов
 	m.Route("/node/:number", "GET,POST", hndValidatorOneInfo) // 1 валидатор
 	m.Get("/api/v1/node/:number", hndAPIValidatorOneInfo)     // API v1: 1 валидатор JSON
-	//TODO: получить список нод/валидаторов по API в виде JSON
+	//TODO: получить список нод/валидаторов по API в виде JSON [замена эндпоинта /nodes и /nodes/:pgn]
+	//TODO: изменить данные ноды/валидатора по API в виде JSON [замена POST для эндпоинта /node/:number] с ответом результата ok/err
 
 	// Адрес кошелька
 	m.Get("/address/:number", hndAddressOneInfo)      // 1 адрес
 	m.Get("/address/:number/:pgn", hndAddressOneInfo) // 1 адрес
-	//TODO: получить данные адреса по API в виде JSON
+	//TODO: получить данные адреса по API в виде JSON [замена эндпоинта /address/:number и /address/:number/:pgn]
 
 	// Монеты
 	m.Get("/coins", hndCoins)                                  // Страница монет
 	m.Route("/coin/:ticker", "GET,POST", hndCoinInfo)          // 1 монета
 	m.Route("/coin/:ticker/:ticker2", "GET,POST", hndCoinInfo) // 1 пара монет
-	//TODO: получить лист Монет по API в виде JSON
-	//TODO: получить данные монеты по API в виде JSON
+	//TODO: получить лист Монет по API в виде JSON [замена эндпоинта /coins]
+	//TODO: получить данные монеты по API в виде JSON [замена эндпоинта /coin/:ticker и /coin/:ticker/:ticker2]
+	//TODO: изменить данные монеты по API в виде JSON [замена POST для эндпоинта /coin/:ticker и /coin/:ticker/:ticker2] с ответом результата ok/err
 
 	// ЛК::Кошелёк
 	m.Route("/sendcoin", "GET,POST", hndWalletTxSend)         // TX: Отправить монету
@@ -228,8 +230,15 @@ func main() {
 	m.Get("/tasklist", hndWalletListTask)                     // Страница листа задач
 	m.Get("/tasklist/:number", hndWalletListTaskAddrs)        // Страница листа задач по адресу
 
-	//TODO: Выполнение транзакции SEND, DELEG, DECLARE/START/STOP-NODE, COINER, CREATE/ACT-CHECK по API в виде JSON
-	//TODO: получить список задач Task по API в виде JSON
+	//TODO: Выполнение транзакции отправки монет SEND по API в виде JSON [замена POST для эндпоинта /sendcoin] с ответом результата trx+ok/err
+	//TODO: Выполнение транзакции делегирование монет DELEG по API в виде JSON [замена POST для эндпоинта /delegation] с ответом результата trx+ok/err
+	//TODO: Выполнение транзакций управления мастернодой DECLARE/START/STOP-NODE по API в виде JSON [замена POST для эндпоинта /masternode] с ответом результата trx+ok/err
+	//TODO: Выполнение транзакции cоздания монеты COINER по API в виде JSON [замена POST для эндпоинта /coiner] с ответом результата trx+ok/err
+	//TODO: Выполнение транзакций управления чеками CREATE/ACT-CHECK по API в виде JSON [замена POST для эндпоинта /checks] с ответом результата trx+ok/err
+
+	//TODO: получить список задач Task по API в виде JSON [замена эндпоинта /tasklist (частично уже реализовано, но для /tasklist/:number в /api/v1/autoTaskOut/:tokenauth/:pubkey)]
+
+	//TODO: получить баланс кошелька для авторизованного пользователя по API в виде JSON [замена эндпоинта ... во все эндпоинты данная информация поступала]
 
 	//[+] convert конвертация - Обмен на другие монеты (coins - уже есть)
 	//[?] checks чеки - Создание и обналичивание

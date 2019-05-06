@@ -138,7 +138,7 @@
     	  </tr>
 		  <tr>
 			<th scope="row">Stake</th>
-      		<td>{{$.OneNode.TotalStake}} {{$.CoinMinter}}</td>
+      		<td>{{printf "%.2f" $.OneNode.TotalStake}} {{$.CoinMinter}}</td>
     	  </tr>
 		  <tr>
 			<th scope="row">#Slots</th>
@@ -241,15 +241,15 @@
 		  <tr>
       		<th scope="col">Owner</th>
       		<th scope="col">Value</th>
-			<th scope="col">In base coin</th>
+			    <th scope="col">In base coin</th>
     	  </tr>
   		</thead>
   		<tbody>
 		 {{range $i1, $v1 := $.OneNode.Stakes}}
     	  <tr>
-			<td><a href="/address/{{$v1.Owner}}">{{$v1.Owner}}<a/></td>
-      		<td>{{$v1.Value}} {{$v1.Coin}}</td>
-			<td>{{$v1.BipValue}} {{$.CoinMinter}}</td>
+			    <td><a href="/address/{{$v1.Owner}}">{{$v1.Owner}}<a/></td>
+      		<td>{{printf "%.2f" $v1.Value}} {{$v1.Coin}}</td>
+			    <td>{{printf "%.2f" $v1.BipValue}} {{$.CoinMinter}}</td>
     	  </tr>		
 		{{end}}
   		</tbody>

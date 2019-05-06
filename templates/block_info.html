@@ -100,7 +100,7 @@
 			<td>{{$.OneBlocks.Time}}</td>
 			<td><a href="/address/{{$v1.From}}">{{$v1.FromMin}}<a/></td>
 			<td>{{$v1.TypeTxt}}</td>
-			<td>{{$v1.Amount}}</td>
+      <td>{{printf "%.2f" $v1.Amount}}</td>
     	  </tr>		
 		{{end}}
   		</tbody>
