@@ -502,6 +502,10 @@ func hndAPIAutoTodoReturn1_1(ctx *macaron.Context) {
 		}
 	}
 
+	if !delATasksMem(dbSys, hashID) {
+		log("ERR", fmt.Sprint("[wallet_task.go] hndAPIAutoTodoReturn1_1(delATasksMem) - HASH = ", hashID), "")
+	}
+
 	retOk.Status = 0 // ok!
 	// возврат JSON данных: ok(0) или bad(код ошибки)
 	ctx.JSON(200, &retOk)
