@@ -176,10 +176,12 @@ func main() {
 	m.Get("/", myHello)    // Лендинг страница
 	m.Get("/404", page404) // ТЕСТ: нет такой страницы
 	// API v1
-	m.Get("/api/v1/newMnemonic", hndAPINewMnemonic)                              // новая seed-фраза, регистрация нового аккаунта в сети Minter
-	m.Get("/api/v1/autoDeleg/:number", hndAPIAutoDelegAddress)                   // получить JSON конфигурацию автоделегирования
-	m.Get("/api/v1/autoTaskOut/:tokenauth/:pubkey", hndAPIAutoTodo)              // получить JSON задачи на исполнение
-	m.Get("/api/v1/autoTaskIn/:tokenauth/:returndataJSON", hndAPIAutoTodoReturn) // результат выполнения автоделегатор
+	m.Get("/api/v1/newMnemonic", hndAPINewMnemonic)                                    // новая seed-фраза, регистрация нового аккаунта в сети Minter
+	m.Get("/api/v1/autoDeleg/:number", hndAPIAutoDelegAddress)                         // получить JSON конфигурацию автоделегирования
+	m.Get("/api/v1/autoTaskOut/:tokenauth/:pubkey", hndAPIAutoTodo)                    // получить JSON задачи на исполнение
+	m.Get("/api/v1.1/autoTaskOut/:tokenauth/:pubkey", hndAPIAutoTodo1_1)               // получить JSON задачи на исполнение v.1.1
+	m.Get("/api/v1/autoTaskIn/:tokenauth/:returndataJSON", hndAPIAutoTodoReturn)       // результат выполнения автоделегатор
+	m.Get("/api/v1.1/autoTaskIn/:tokenauth/:hashid/:hashtrx", hndAPIAutoTodoReturn1_1) // результат выполнения автоделегатор v.1.1
 
 	// о сессиях тут -> https://go-macaron.com/docs/middlewares/session
 	//m.Route("/auth", "GET,POST", hndAuth)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/rand"
 	"fmt"
 	"strconv"
 	"time"
@@ -127,4 +128,16 @@ func cnvStr2Float(amntTokenStr string) float32 {
 		fAmntToken = float32(fAmntToken64)
 	}
 	return fAmntToken
+}
+
+// Генерация guid
+func newHash() string {
+	b := make([]byte, 16)
+	_, err := rand.Read(b)
+	if err != nil {
+		log("ERR", fmt.Sprint("newHash() - ", err.Error()), "")
+		//panic(err.Error())
+	}
+	//return fmt.Sprintf("%x-%x-%x-%x-%x", b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+	return fmt.Sprintf("%x%x%x%x%x", b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
 }
