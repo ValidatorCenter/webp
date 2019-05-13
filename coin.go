@@ -363,9 +363,11 @@ func hndCoinInfo(ctx *macaron.Context, sess session.Store) {
 		ctx.Data["ChainNet"] = "testnet"
 	}
 
+	// Заголовок страницы:
+	ctx.Data["Title"] = "Coin" //one1Coins.Name // иначе не покажется в меню выбор монет <-->
+
 	ctx.Data["UpdateData"] = timeFormat0(one1Coins.TimeUpdate)
 	ctx.Data["Time"] = timeFormat0(one1Coins.Time)
-	ctx.Data["Title"] = "Coin" //one1Coins.Name // иначе не покажется в меню выбор монет <-->
 	ctx.Data["TitleCoin"] = one1Coins.Name
 	ctx.Data["Transactions"] = allTrans
 	ctx.Data["Ticker1"] = ticker1
@@ -397,12 +399,17 @@ func hndCoinInfo(ctx *macaron.Context, sess session.Store) {
 	ctx.Data["ReserveBalance"] = strconv.FormatFloat(float64(one1Coins.ReserveBalanceNow), 'f', 2, 32)
 	//ctx.Data["AmntTrans24x7"] = one1Coins.AmntTrans24x7 //<p class="lead">Количество транзакций (за 7д):</p>
 	ctx.Data["CoinInf"] = one1Coins
+
+	// Пользователь:
 	ctx.Data["UsrAuth"] = auth
 	ctx.Data["UsrName"] = usrName
 	ctx.Data["UsrAddress"] = idUsr
 
+	// Инф.сообщения от системы:
 	ctx.Data["AlertAct"] = alertAct
 	ctx.Data["AlertMsg"] = alertMsg
 	ctx.Data["AlertType"] = alertType
+
+	// Вывод страницы:
 	ctx.HTML(200, "coin_info")
 }

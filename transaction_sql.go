@@ -377,6 +377,7 @@ func srchTrxHash(db *sqlx.DB, hashTrans string) ms.TransResponse {
 		FROM trx 
 		LEFT JOIN trx_data ON trx.hash = trx_data.hash 
 		WHERE trx.hash = '%s'
+		ORDER BY trx.height_i32 DESC
 	`, hashTrans))
 	if err != nil {
 		if err.Error() == "sql: no rows in result set" {
@@ -674,7 +675,13 @@ func srchTrxAddrsSql(db *sqlx.DB, addrs string, skipTrns int) []ms.TransResponse
 	//trnsTbl.Find(bson.M{"from": nmbrAddrs}).Sort("-$natural").Skip(skipTrns).Limit(50).All(&trnM)
 	trnM := []ms.TransResponse{}
 	dt := []TrxS{}
-	err := db.Select(&dt, fmt.Sprintf("SELECT * FROM trx LEFT JOIN trx_data ON trx.hash = trx_data.hash WHERE trx.from_adrs = '%s'", addrs))
+	err := db.Select(&dt, fmt.Sprintf(`
+		SELECT * 
+		FROM trx 
+		LEFT JOIN trx_data ON trx.hash = trx_data.hash 
+		WHERE trx.from_adrs = '%s'
+		ORDER BY trx.height_i32 DESC
+		`, addrs))
 	if err != nil {
 		log("ERR", fmt.Sprint("[transaction_sql.go] srchTrxAddrsSql(Select) - [addrs №", addrs, "] ERR:", err), "")
 		panic(err) //dbg
