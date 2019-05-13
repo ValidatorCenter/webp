@@ -304,6 +304,10 @@ func hndAPIAutoTodo1_1(ctx *macaron.Context) {
 
 	// Сворачиваем данные по адресу
 	for _, d := range list100 {
+		if d.Amount == 0 {
+			continue
+		}
+
 		// Лист мультиотправки
 		srchInList := false
 		posic := 0
@@ -342,6 +346,7 @@ func hndAPIAutoTodo1_1(ctx *macaron.Context) {
 	res1B, _ := json.Marshal(retDt) // TODO: сразу list100
 
 	// Помещаем в Redis строку(это данные JSON) по HASH сгенерированному
+	// TODO: Нужно с временем жизни помещать, т.е. удалять если давно лежит не реализованное
 	if !setATasksMem(dbSys, retAPI.HashID, string(res1B)) {
 		// TODO: что-то произошло не так...
 	}
