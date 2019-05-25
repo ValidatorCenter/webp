@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"time"
 
 	"github.com/go-macaron/session"
@@ -348,7 +349,14 @@ func hndAPIAutoTodo1_1(ctx *macaron.Context) {
 	// Помещаем в Redis строку(это данные JSON) по HASH сгенерированному
 	// TODO: Нужно с временем жизни помещать, т.е. удалять если давно лежит не реализованное
 	if !setATasksMem(dbSys, retAPI.HashID, string(res1B)) {
-		// TODO: что-то произошло не так...
+		// FIXME: что-то произошло не так... тогда возвращаем ошибку в JSON
+	}
+
+	// Сохраняем task-log в файл
+	err = ioutil.WriteFile(fmt.Sprintf("%s/out_%s_%s.json", TaskLogPath, time.Now().Format("2006-01-02 15-04-05"), retAPI.HashID), res1B, 0777)
+	if err != nil {
+		// плохо, но не критично, просто напишем об ошибке
+		log("ERR", err.Error(), "")
 	}
 
 	// возврат JSON данных, если нет, то пустой массив

@@ -23,9 +23,10 @@ import (
 
 // Глобально установленные объекты
 var (
-	CoinMinter string // Основная монета Minter
-	srvAuth    string // сервер авторизации
-	sdk        ms.SDK
+	CoinMinter  string // Основная монета Minter
+	srvAuth     string // сервер авторизации
+	TaskLogPath string
+	sdk         ms.SDK
 
 	dbSQL *sqlx.DB
 	dbSys *redis.Client
@@ -131,6 +132,8 @@ func main() {
 	if SitePublicDir == "" {
 		SitePublicDir = "public"
 	}
+
+	TaskLogPath = secSite.Key("TASKLOG_PATH").String()
 
 	secAuth := cfg.Section("auth")
 	srvAuth = secAuth.Key("ADDRESS").String()
