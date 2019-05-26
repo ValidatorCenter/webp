@@ -102,11 +102,24 @@ func srchNodeTaskNoDone(db *sqlx.DB, addrs string, nodes []s.NodeExt) []s.NodeTo
 	return list100
 }
 
-// Обновление задачи
-func updNodeTask(db *sqlx.DB, newData s.NodeTodo) error {
+// Обновление задач
+func updNodeTask(db *sqlx.DB, newData []s.NodeTodo) error {
 	var err error
 
+	err = addNodeTaskSqlArr(db, &newData)
+
+	return err
+}
+
+// Обновление задачи
+func updNodeTaskOne(db *sqlx.DB, newData s.NodeTodo) error {
+	var err error
+
+	/*allNodesTodo:=[]s.NodeTodo{}
+	allNodesTodo=append(allNodesTodo,newData)*/
+
 	err = addNodeTaskSql(db, &newData)
+	//err = addNodeTaskSqlArr(db, &allNodesTodo)
 
 	return err
 }
@@ -159,5 +172,87 @@ func addNodeTaskSql(db *sqlx.DB, dt *s.NodeTodo) error {
 		log("ERR", fmt.Sprint("[node_task_sql.go] addNodeTaskSql(Commit() -", err), "")
 		return err
 	}
+	return err
+}
+
+// Добавить массив задач для ноды в SQL
+func addNodeTaskSqlArr(db *sqlx.DB, dtSlc *[]s.NodeTodo) error {
+	var err error
+
+	tx := db.MustBegin()
+	qPg_Tx := `
+	INSERT INTO node_tasks (
+		priority,
+		done,
+		created,
+		donet,
+		type,
+		height_i32,
+		pub_key,
+		address,
+		amount_f32,
+		comment,
+		tx_hash,
+		updated_date
+	) VALUES %s
+	`
+	strValue := `(
+		:priority,
+		:done,
+		:created,
+		:donet,
+		:type,
+		:height_i32,
+		:pub_key,
+		:address,
+		:amount_f32,
+		:comment,
+		:tx_hash,
+		:updated_date
+	)`
+	strValueAll := ""
+	_UpdYCH := time.Now().Format("2006-01-02")
+	for iStp, dt := range *dtSlc {
+		str1 := strValue
+		m1 := map[string]interface{}{
+			"priority":     dt.Priority,
+			"done":         dt.Done,
+			"created":      dt.Created,
+			"donet":        dt.DoneT,
+			"type":         dt.Type,
+			"height_i32":   dt.Height,
+			"pub_key":      dt.PubKey,
+			"address":      dt.Address,
+			"amount_f32":   dt.Amount,
+			"comment":      dt.Comment,
+			"tx_hash":      dt.TxHash,
+			"updated_date": _UpdYCH,
+		}
+		str1, err := mapReplace(str1, m1)
+		if err != nil {
+			log("ERR", fmt.Sprint("[node_task_sql.go] addNodeTaskSqlArr(mapReplace) - ", err), "")
+			return err
+		}
+		if len(*dtSlc) > 1 {
+			if iStp == 0 {
+				strValueAll = str1
+			} else {
+				strValueAll = fmt.Sprintf("%s, %s", strValueAll, str1)
+			}
+		} else {
+			strValueAll = str1
+		}
+	}
+	qPg_Tx2 := fmt.Sprintf(qPg_Tx, strValueAll)
+
+	tx.MustExec(qPg_Tx2)
+
+	err = tx.Commit()
+	if err != nil {
+		log("ERR", fmt.Sprint("[node_task_sql.go] addNodeTaskSqlArr(Commit --> trx) - ", err), "")
+		return err
+	}
+	log("INF", "INSERT", fmt.Sprint("trx amount=", len(*dtSlc)))
+
 	return err
 }

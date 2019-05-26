@@ -432,7 +432,7 @@ func hndAPIAutoTodoReturn(ctx *macaron.Context) {
 			updData.DoneT = dateNow
 			updData.TxHash = resActive.TxHash
 
-			err = updNodeTask(dbSQL, updData)
+			err = updNodeTaskOne(dbSQL, updData)
 
 			if err != nil {
 				retOk.Status = 1 // error!
@@ -478,6 +478,8 @@ func hndAPIAutoTodoReturn1_1(ctx *macaron.Context) {
 	nodeM := []s.NodeExt{}
 	nodeM = srchNodeAddress(dbSQL, idUsr) // Получаем весь список нод пользователя
 
+	updDataArr := []s.NodeTodo{}
+
 	dateNow := time.Now()
 	//перебираем массив и обновляем статус в базе //
 	for _, d := range resActive.List {
@@ -501,17 +503,22 @@ func hndAPIAutoTodoReturn1_1(ctx *macaron.Context) {
 			updData.DoneT = dateNow
 			updData.TxHash = txHash
 
-			err = updNodeTask(dbSQL, updData)
+			updDataArr = append(updDataArr, updData)
 
-			if err != nil {
-				retOk.Status = 1 // error!
-				retOk.Message = err.Error()
-				ctx.JSON(200, &retOk)
-				return
-			}
 		} else {
 			// пропускаем! Данная нода не принадлежит пользователю!
 			// TODO: результат отдать о том что нода не пользователя (может кто то пытается взломать)
+		}
+	}
+
+	if len(updDataArr) > 0 {
+		err = updNodeTask(dbSQL, updDataArr)
+
+		if err != nil {
+			retOk.Status = 1 // error!
+			retOk.Message = err.Error()
+			ctx.JSON(200, &retOk)
+			return
 		}
 	}
 

@@ -2,8 +2,10 @@ package main
 
 import (
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
@@ -140,4 +142,28 @@ func newHash() string {
 	}
 	//return fmt.Sprintf("%x-%x-%x-%x-%x", b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
 	return fmt.Sprintf("%x%x%x%x%x", b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+}
+
+// Замена в строке по мап-интерфейсу
+func mapReplace(str1 string, map1 map[string]interface{}) (string, error) {
+	for iS, dM := range map1 {
+		switch t := dM.(type) {
+		case bool:
+			str1 = strings.Replace(str1, fmt.Sprintf(":%s,", iS), fmt.Sprintf("%t,", dM), -1)
+			str1 = strings.Replace(str1, fmt.Sprintf(":%s\n", iS), fmt.Sprintf("%t\n", dM), -1)
+		case int, int8, int32, int64, uint, uint32, uint64:
+			str1 = strings.Replace(str1, fmt.Sprintf(":%s,", iS), fmt.Sprintf("%d,", dM), -1)
+			str1 = strings.Replace(str1, fmt.Sprintf(":%s\n", iS), fmt.Sprintf("%d\n", dM), -1)
+		case string:
+			str1 = strings.Replace(str1, fmt.Sprintf(":%s,", iS), fmt.Sprintf("'%s',", dM), -1)
+			str1 = strings.Replace(str1, fmt.Sprintf(":%s\n", iS), fmt.Sprintf("'%s'\n", dM), -1)
+		case float32, float64:
+			str1 = strings.Replace(str1, fmt.Sprintf(":%s,", iS), fmt.Sprintf("%f,", dM), -1)
+			str1 = strings.Replace(str1, fmt.Sprintf(":%s\n", iS), fmt.Sprintf("%f\n", dM), -1)
+		default:
+			return "", errors.New(fmt.Sprintf("Don't know type %T", t))
+		}
+	}
+
+	return str1, nil
 }
