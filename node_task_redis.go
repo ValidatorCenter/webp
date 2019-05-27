@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/go-redis/redis"
 )
 
 // Поместить задачу в MEM
-func setATasksMem(db *redis.Client, hashID string, dataJSON string) bool {
-	err := db.Set(hashID, dataJSON, 0).Err()
+func setATasksMem(db *redis.Client, hashID string, dataJSON string, expires_hour int) bool {
+	err := db.Set(hashID, dataJSON, time.Hour*time.Duration(expires_hour)).Err()
 	if err != nil {
 		log("ERR", fmt.Sprint("[node_task_redis.go] setATasksMem(set...", hashID, ") - ", err), "")
 		return false
@@ -30,5 +31,5 @@ func getATasksMem(db *redis.Client, hashID string) string {
 
 // Удалить задачу из MEM
 func delATasksMem(db *redis.Client, hashID string) bool {
-	return setATasksMem(db, hashID, "")
+	return setATasksMem(db, hashID, "", 0)
 }

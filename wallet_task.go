@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"time"
 
 	"github.com/go-macaron/session"
@@ -345,10 +346,16 @@ func hndAPIAutoTodo1_1(ctx *macaron.Context) {
 
 	res1B, _ := json.Marshal(retDt) // TODO: сразу list100
 
-	// Помещаем в Redis строку(это данные JSON) по HASH сгенерированному
-	// TODO: Нужно с временем жизни помещать, т.е. удалять если давно лежит не реализованное
-	if !setATasksMem(dbSys, retAPI.HashID, string(res1B)) {
-		// TODO: что-то произошло не так...
+	// Помещаем в Redis строку(это данные JSON) по HASH сгенерированному (истекает через 24 часа)
+	if !setATasksMem(dbSys, retAPI.HashID, string(res1B), 24) {
+		// FIXME: что-то произошло не так... тогда возвращаем ошибку в JSON
+	}
+
+	// Сохраняем task-log в файл
+	err = ioutil.WriteFile(fmt.Sprintf("%s/out_%s_%s.json", TaskLogPath, time.Now().Format("2006-01-02 15-04-05"), retAPI.HashID), res1B, 0644)
+	if err != nil {
+		// плохо, но не критично, просто напишем об ошибке
+		log("ERR", err.Error(), "")
 	}
 
 	// возврат JSON данных, если нет, то пустой массив
@@ -424,7 +431,7 @@ func hndAPIAutoTodoReturn(ctx *macaron.Context) {
 			updData.DoneT = dateNow
 			updData.TxHash = resActive.TxHash
 
-			err = updNodeTask(dbSQL, updData)
+			err = updNodeTaskOne(dbSQL, updData)
 
 			if err != nil {
 				retOk.Status = 1 // error!
@@ -470,6 +477,8 @@ func hndAPIAutoTodoReturn1_1(ctx *macaron.Context) {
 	nodeM := []s.NodeExt{}
 	nodeM = srchNodeAddress(dbSQL, idUsr) // Получаем весь список нод пользователя
 
+	updDataArr := []s.NodeTodo{}
+
 	dateNow := time.Now()
 	//перебираем массив и обновляем статус в базе //
 	for _, d := range resActive.List {
@@ -493,17 +502,22 @@ func hndAPIAutoTodoReturn1_1(ctx *macaron.Context) {
 			updData.DoneT = dateNow
 			updData.TxHash = txHash
 
-			err = updNodeTask(dbSQL, updData)
+			updDataArr = append(updDataArr, updData)
 
-			if err != nil {
-				retOk.Status = 1 // error!
-				retOk.Message = err.Error()
-				ctx.JSON(200, &retOk)
-				return
-			}
 		} else {
 			// пропускаем! Данная нода не принадлежит пользователю!
 			// TODO: результат отдать о том что нода не пользователя (может кто то пытается взломать)
+		}
+	}
+
+	if len(updDataArr) > 0 {
+		err = updNodeTask(dbSQL, updDataArr)
+
+		if err != nil {
+			retOk.Status = 1 // error!
+			retOk.Message = err.Error()
+			ctx.JSON(200, &retOk)
+			return
 		}
 	}
 
