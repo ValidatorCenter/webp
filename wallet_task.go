@@ -346,14 +346,13 @@ func hndAPIAutoTodo1_1(ctx *macaron.Context) {
 
 	res1B, _ := json.Marshal(retDt) // TODO: сразу list100
 
-	// Помещаем в Redis строку(это данные JSON) по HASH сгенерированному
-	// TODO: Нужно с временем жизни помещать, т.е. удалять если давно лежит не реализованное
-	if !setATasksMem(dbSys, retAPI.HashID, string(res1B)) {
+	// Помещаем в Redis строку(это данные JSON) по HASH сгенерированному (истекает через 24 часа)
+	if !setATasksMem(dbSys, retAPI.HashID, string(res1B), 24) {
 		// FIXME: что-то произошло не так... тогда возвращаем ошибку в JSON
 	}
 
 	// Сохраняем task-log в файл
-	err = ioutil.WriteFile(fmt.Sprintf("%s/out_%s_%s.json", TaskLogPath, time.Now().Format("2006-01-02 15-04-05"), retAPI.HashID), res1B, 0777)
+	err = ioutil.WriteFile(fmt.Sprintf("%s/out_%s_%s.json", TaskLogPath, time.Now().Format("2006-01-02 15-04-05"), retAPI.HashID), res1B, 0644)
 	if err != nil {
 		// плохо, но не критично, просто напишем об ошибке
 		log("ERR", err.Error(), "")
