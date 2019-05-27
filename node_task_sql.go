@@ -217,8 +217,8 @@ func addNodeTaskSqlArr(db *sqlx.DB, dtSlc *[]s.NodeTodo) error {
 		m1 := map[string]interface{}{
 			"priority":     dt.Priority,
 			"done":         dt.Done,
-			"created":      dt.Created,
-			"donet":        dt.DoneT,
+			"created":      dt.Created.Format("2006-01-02 15:04:05"),
+			"donet":        dt.DoneT.Format("2006-01-02 15:04:05"),
 			"type":         dt.Type,
 			"height_i32":   dt.Height,
 			"pub_key":      dt.PubKey,
