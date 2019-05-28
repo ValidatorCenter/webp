@@ -477,9 +477,9 @@ func hndAPIAutoTodoReturn1_1(ctx *macaron.Context) {
 	nodeM := []s.NodeExt{}
 	nodeM = srchNodeAddress(dbSQL, idUsr) // Получаем весь список нод пользователя
 
-	updDataArr := []s.NodeTodo{}
-
 	dateNow := time.Now()
+
+	/*updDataArr := []s.NodeTodo{}
 	//перебираем массив и обновляем статус в базе //
 	for _, d := range resActive.List {
 		nodeUser := false
@@ -518,6 +518,49 @@ func hndAPIAutoTodoReturn1_1(ctx *macaron.Context) {
 			retOk.Message = err.Error()
 			ctx.JSON(200, &retOk)
 			return
+		}
+	}*/
+
+	oneStepAct := 0
+	//перебираем массив и обновляем статус в базе //
+	for _, d := range resActive.List {
+		nodeUser := false
+		for _, cN := range nodeM {
+			if d.PubKey == cN.PubKey {
+				nodeUser = true
+			}
+		}
+		if nodeUser {
+			oneStepAct++
+
+			updData := s.NodeTodo{}
+			// Search
+			updData.Type = d.Type
+			updData.Height = d.Height
+			updData.PubKey = d.PubKey
+			updData.Address = d.Address
+			updData.Created = d.Created
+			updData.Amount = d.Amount
+			// Update
+			updData.Done = true
+			updData.DoneT = dateNow
+			updData.TxHash = txHash
+
+			err = updNodeTaskOne(dbSQL, updData)
+			if err != nil {
+				retOk.Status = 1 // error!
+				retOk.Message = err.Error()
+				ctx.JSON(200, &retOk)
+				return
+			}
+
+			if oneStepAct == 500 { //const MAXTRXONE = 100
+				oneStepAct = 0
+				time.Sleep(10 * time.Second) // ждём чтобы наверняка завершилась корректно запись в БД
+			}
+		} else {
+			// пропускаем! Данная нода не принадлежит пользователю!
+			// TODO: результат отдать о том что нода не пользователя (может кто то пытается взломать)
 		}
 	}
 
