@@ -154,6 +154,7 @@ type ReturnAPITask1_1 struct {
 
 // Задачи для исполнения ноде
 type TaskOne struct {
+	ID      string    `json:"_id"`
 	Done    bool      `json:"done"`       // выполнено
 	Created time.Time `json:"created"`    // создана time
 	Type    string    `json:"type"`       // тип задачи: SEND-CASHBACK,...
@@ -479,48 +480,6 @@ func hndAPIAutoTodoReturn1_1(ctx *macaron.Context) {
 
 	dateNow := time.Now()
 
-	/*updDataArr := []s.NodeTodo{}
-	//перебираем массив и обновляем статус в базе //
-	for _, d := range resActive.List {
-		nodeUser := false
-		for _, cN := range nodeM {
-			if d.PubKey == cN.PubKey {
-				nodeUser = true
-			}
-		}
-		if nodeUser {
-			updData := s.NodeTodo{}
-			// Search
-			updData.Type = d.Type
-			updData.Height = d.Height
-			updData.PubKey = d.PubKey
-			updData.Address = d.Address
-			updData.Created = d.Created
-			updData.Amount = d.Amount
-			// Update
-			updData.Done = true
-			updData.DoneT = dateNow
-			updData.TxHash = txHash
-
-			updDataArr = append(updDataArr, updData)
-
-		} else {
-			// пропускаем! Данная нода не принадлежит пользователю!
-			// TODO: результат отдать о том что нода не пользователя (может кто то пытается взломать)
-		}
-	}
-
-	if len(updDataArr) > 0 {
-		err = updNodeTask(dbSQL, updDataArr)
-
-		if err != nil {
-			retOk.Status = 1 // error!
-			retOk.Message = err.Error()
-			ctx.JSON(200, &retOk)
-			return
-		}
-	}*/
-
 	oneStepAct := 0
 	//перебираем массив и обновляем статус в базе //
 	for _, d := range resActive.List {
@@ -535,6 +494,7 @@ func hndAPIAutoTodoReturn1_1(ctx *macaron.Context) {
 
 			updData := s.NodeTodo{}
 			// Search
+			updData.ID = d.ID
 			updData.Type = d.Type
 			updData.Height = d.Height
 			updData.PubKey = d.PubKey

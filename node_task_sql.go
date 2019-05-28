@@ -133,6 +133,7 @@ func addNodeTaskSql(db *sqlx.DB, dt *s.NodeTodo) error {
 
 	qPg := `
 		INSERT INTO node_tasks (
+			_id,
 			priority,
 			done,
 			created,
@@ -146,6 +147,7 @@ func addNodeTaskSql(db *sqlx.DB, dt *s.NodeTodo) error {
 			tx_hash,
 			updated_date
 		) VALUES (
+			:_id,
 			:priority,
 			:done,
 			:created,
@@ -182,6 +184,7 @@ func addNodeTaskSqlArr(db *sqlx.DB, dtSlc *[]s.NodeTodo) error {
 	tx := db.MustBegin()
 	qPg_Tx := `
 	INSERT INTO node_tasks (
+		_id,
 		priority,
 		done,
 		created,
@@ -197,6 +200,7 @@ func addNodeTaskSqlArr(db *sqlx.DB, dtSlc *[]s.NodeTodo) error {
 	) VALUES %s
 	`
 	strValue := `(
+		:_id,
 		:priority,
 		:done,
 		:created,
@@ -215,6 +219,7 @@ func addNodeTaskSqlArr(db *sqlx.DB, dtSlc *[]s.NodeTodo) error {
 	for iStp, dt := range *dtSlc {
 		str1 := strValue
 		m1 := map[string]interface{}{
+			"_id":          dt.ID,
 			"priority":     dt.Priority,
 			"done":         dt.Done,
 			"created":      dt.Created.Format("2006-01-02 15:04:05"),
