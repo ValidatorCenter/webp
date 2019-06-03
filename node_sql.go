@@ -161,10 +161,8 @@ func srchNodeAddrsSql(db *sqlx.DB, addrs string) []Delegate {
 	//nodesCollection.Find(bson.M{"stakes.owner": nmbrAddrs}).Sort("-$natural").All(&nodesDeleg)
 	nodesDeleg := []Delegate{}
 	err := db.Select(&nodesDeleg, fmt.Sprintf(`
-		SELECT n.pub_key,n.pub_key_min,ns.coin,ns.value_f32,ns.bip_value_f32
-		FROM nodes n FINAL
-		LEFT JOIN node_stakes ns FINAL
-		ON n.pub_key = ns.pub_key
+		SELECT ns.pub_key,ns.coin,ns.value_f32,ns.bip_value_f32
+		FROM node_stakes ns FINAL
 		WHERE ns.owner_address = '%s'
 	`, addrs))
 	if err != nil {

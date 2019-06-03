@@ -191,6 +191,7 @@ func hndAddressOneInfo(ctx *macaron.Context, sess session.Store) {
 
 	allDeleg = srchNodeAddrsSql(dbSQL, nmbrAddrs)
 	for iS, _ := range allDeleg {
+		allDeleg[iS].ValidatorMin = getMinString(allDeleg[iS].Validator)
 		totalDeleg += allDeleg[iS].ValueBip
 	}
 
