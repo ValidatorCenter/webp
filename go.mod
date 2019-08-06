@@ -5,7 +5,7 @@ go 1.12
 require (
 	github.com/MinterTeam/go-amino v0.14.1 // indirect
 	github.com/MinterTeam/minter-go-node v1.0.1 // indirect
-	github.com/Unknwon/com v0.0.0-20190321035513-0fed4efef755 // indirect
+	github.com/unknwon/com v0.0.0-20190321035513-0fed4efef755 // indirect
 	github.com/ValidatorCenter/minter-go-sdk v0.0.0-20190422211717-d11aefeb78be // indirect
 	github.com/ValidatorCenter/prs3r v3.1.0+incompatible // indirect
 	github.com/btcsuite/btcd v0.0.0-20190523000118-16327141da8c // indirect
